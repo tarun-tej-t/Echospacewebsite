@@ -1,0 +1,73 @@
+<%- include('partials/header') %>
+
+  <%- include('partials/subbar') %>
+  <!-- <style>
+.fpbg{
+   /* background-image: url("/images/feed1.jpg"); */
+     background-color: #F3F2EF;
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+}
+
+  </style> -->
+
+  <div class="fpbg">
+    <br>
+    <% posthelps.reverse().forEach(function(user){ %>
+            <div style="padding: 2%" class="jumbotron">
+          <div class="row">
+            <div class="col-8">
+              <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
+                <%=user.name%>
+              </h2>
+            </div>
+            <div class="col-4">
+              <p style="display: table-cell" style="font-weight: 900;font-variant: small-caps;">
+                <%=user.city%> , <%=user.state%>
+              </p>
+            </div>
+          </div>
+          <hr />
+          <p style="font-weight: bold" class="first">
+            Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
+          </p>
+          <div class="row">
+            <div class="col-8" style="  padding-left: 15px; padding-top: 10px;">
+              <p style="text-align: justify;word-break: break-word;">
+                <%=user.content%>
+              </p>
+              <br>
+              Contact : <%=user.contact%>
+            </div>
+            <div class="col-4">
+              <p>
+                <%if(user.age){%>
+                Age: <%=user.age%>
+                <% } %> 
+                  <br />
+                  <%if(user.temperature){%>
+                  Temperature: <%=user.temperature%>°F
+                  <%}%>
+                    <br />
+                    <%if(user.count){%>
+                    SPO2 Count: <%=user.count%>
+                    <%}%>
+              </p>
+            </div>
+          </div>
+          <br />
+          <p>
+            <a href="tel:<%=user.contact%>"> Call </a>/
+            <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
+          </p>
+          Posted On: <small><%=user.time%></small>
+          <br/>
+        </div>
+        <br>
+        <% }) %>
+          </div>
+        
+        <%- include('partials/footer') %>

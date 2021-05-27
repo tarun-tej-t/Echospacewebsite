@@ -1,0 +1,224 @@
+<style>
+    .bodya {
+        /* min-height: 100vh; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: serif;
+        min-height: 500px;
+        background-image: url("/images/aboutbg3.jpg");
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .about-sectiona {
+        background: url(/images/pic.jpeg) no-repeat left;
+        background-size: 55%;
+        background-color: #0f000000;
+        overflow: hidden;
+        padding: 100px 0;
+        font-family: serif;
+    }
+
+    .inner-containera {
+        width: 55%;
+        float: right;
+        background-color: #006B96;
+        padding: 150px;
+        color: #ffffff;
+    }
+
+    .inner-containera h1 {
+        margin-bottom: 30px;
+        font-size: 30px;
+        font-weight: 900;
+    }
+
+    .texta {
+        font-size: 15px;
+        color: #ffffff;
+        line-height: 30px;
+        text-align: justify;
+        margin-bottom: 40px;
+        font-family: serif;
+    }
+
+    .skillsa {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+    .help1,
+    .provide1 {
+        width: 50vw;
+        padding: 5%;
+    }
+
+    .border1 {
+
+        display: grid;
+        place-items: center;
+        min-height: 200px;
+        border: 8px solid;
+        padding: 1rem;
+    }
+
+    .sides1 {
+        border-image: linear-gradient(to left, #006B96, rgb(255, 255, 255)) 1 0;
+    }
+
+    .sides1-2 {
+        border-image: linear-gradient(to bottom, #006B96, rgb(255, 255, 255)) 0 1;
+    }
+    
+    .hitw0 {
+        background-image: url("/images/aboutbg3.jpg");
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 5%;
+    }
+
+    .hitw {
+        background-image: url("/images/aboutbg1.jpg");
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .wtou {
+        color: #ffffff;
+        padding: 5%;
+        text-align: center;
+        background-image: url("/images/aboutbg2.jpg");
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    @media screen and (max-width:1200px) {
+        .inner-containera {
+            padding: 80px;
+        }
+    }
+
+    @media screen and (max-width:1000px) {
+        .about-sectiona {
+            background-size: 100%;
+            padding: 100px 40px;
+        }
+
+        .inner-containera {
+            width: 100%;
+        }
+    }
+
+    @media screen and (max-width:600px) {
+        .about-sectiona {
+            background-size: 100%;
+            padding: 0;
+        }
+
+        .inner-containera {
+            padding: 60px;
+        }
+
+        .help1,
+        .provide1 {
+            width: 100vw;
+            padding: 10%;
+
+        }
+    }
+</style>
+<%- include('partials/header') %>
+    <div>
+        <!-- style="background-image: url(/images/aboutbg.jpg);" -->
+        <div class="bodya">
+            <div class="about-sectiona">
+                <div class="inner-containera">
+                    <h1>About Us</h1>
+                    <h2>What is Echospace ? </h2>
+                    <p class="texta">
+                        Echospace is first of it’s kind <strong style="font-weight: 900;">“impact networking”</strong>
+                        platform aims to redefine the <strong style="font-weight: 900;">“give and ask”</strong> approach
+                        of
+                        India in the times of need/crisis.Over the past few months, Millions of people in India needed
+                        financial, medical and other crisis related help but had no perfect place to make a demand for
+                        it.
+                        We are creating an ecosystem of Individuals/NGOs/Companies who will listen to your voice!
+                        <br />We
+                        are creating an <strong style="font-weight: 900;">ecosystem of Individuals/ NGOs/
+                            Companies</strong>
+                        who will listen to your voice!
+                    </p>
+                    <div class="skillsa">
+                        <!-- <span>Web Design</span>
+                        <span>Photoshop & Illustrator</span>
+                        <span>Coding</span> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hitw0" ><br><br>
+            <h3 style="text-align: center;font-weight: 900;">How does it work?</h3><br>
+            <p style="text-align: center;font-size: larger;font-weight: 700;">We are creating a community of impact individuals who can help each other in
+                times of need and can discuss issues together to come up with solutions. </p><br><br></div>
+                <div class="hitw">
+            <div
+                style="display: flex;flex-direction: row;justify-content: space-evenly;width: 100vw;flex-wrap: wrap;background-color: rgba(255, 255, 255, 0.692);">
+                <div class="help1">
+                    <div class="sides1 border1">
+                        <h3 style="text-align: center;">For someone looking for help/support:</h3>
+                        <ul>
+                            <li>Go to <strong style="font-weight: 900;">“Write your post”</strong> and click on <strong
+                                    style="font-weight: 900;">“To seek help”</strong>. </li>
+                            <li>Select the <strong style="font-weight: 900;">crisis type</strong> your problem belongs
+                                to(Eg. Covid-19, Unemployment). </li>
+                            <li>Fill out the details with your specific <strong style="font-weight: 900;">requirement
+                                    type</strong>. (Eg. Financial Help). </li>
+                            <li>Submit the request and your request will be in the <strong
+                                    style="font-weight: 900;">“Help
+                                    Now”</strong> section. </li>
+                            <li>Our network of NGOs/Companies/Individuals will reach out to you in a minimum amount of
+                                time.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="provide1">
+                    <div class="sides1 border1">
+                        <h3 style="text-align: center;">For someone trying to provide services: </h3>
+                        <ul>
+                            <li>Go to <strong style="font-weight: 900;">“Write your post”</strong> and click on <strong
+                                    style="font-weight: 900;">“To provide services option”</strong>.</li>
+                            <li>Fill out the details mentioning your <strong style="font-weight: 900;">service
+                                    type</strong>
+                                (Eg. Financial Help, Employment/Upskilling for
+                                covid affected families). </li>
+                            <li>Your service will be visible in the <strong
+                                    style="font-weight: 900;">“services”</strong>
+                                section </li>
+                            <li>People who can benefit from your support, will reach out to you. </li>
+                            <br> <br>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wtou">
+            <br>
+            <h3 style="text-align: center;">Write to us!</h3><br>
+            <p>If you have any suggestions/feedback, we would love to hear from you ! 
+                Please reach out to us at <a href="mailto:team@echospace.in">team@echospace.in</a>.<br><br>
+                
+                We are hiring volunteer positions in development, product management/design and marketing roles. If you are interested in any of the roles, please reach out to us at <a href="mailto:volunteer@echospace.in">volunteer@echospace.in</a>. </p><br><br>
+        </div>
+    </div>
+    <%- include('partials/footer') %>

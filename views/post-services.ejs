@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="/css/services.css">
+<%- include("partials/headerlogout") %>
+    <div class="top" style="width: 90vw;">
+      <div class="register">
+        <div class="heads">
+        <h2 style= "color: #fff;"}>Post to provide help/services</h2>
+      </div>
+      <% if(typeof postservicesalert != 'undefined'){%>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+       Please rectify the following details before posting
+           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+       <span aria-hidden="true"></span>
+           </button>
+         </div>
+        <% postservicesalert.forEach(function(posterror){%>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+         <%=posterror.msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <%})%>
+        <% } %>
+        <form id="register" action="/post-services" method="post">
+          <label>Type : <span style="color: red;">*</span></label><br> <br/>
+          <select required class="drop" style="width: 70vw;" name="type">
+            <option value="Individual">Individual</option>
+            <option value="NGO">NGO</option>
+            <option value="Company">Company</option>
+          </select>
+          <br><br> <br/>
+          <label>Name :<span style="color: red;">*</span> </label>
+          <br/> <br/>
+          <input type="text" required name="pname" style="width: 70vw;" id="name" placeholder="Enter You Name">
+          <br/> <br/>
+          <br>
+          <label>Service Type : <span style="color: red;">*</span></label>
+          <br> <br/>
+          <select required class="type" style="width: 70vw;" name="help">
+            <option value="Financial Services">Financial Services</option>
+            <option value="Food Services">Food Services</option>
+            <option value="Ambulance Services">Ambulance Services</option>
+            <option value="Beds with Oxygen">Beds with Oxygen</option>
+            <option value="Beds without Oxygen">Beds without Oxygen</option>
+            <option value="Plasma">Plasma</option>
+            <option value="Medicine Type">Medicine Type</option>
+            <option value="Oxygen Supply">Oxygen Supply</option>
+            <option value="Vaccination">Vaccination</option>
+            <option value="Otherss">Others</option>
+          </select>
+          <br>
+          <br> <br/>
+          <label> Service Details : <span style="color: red;">*</span></label> <br/> <br/>
+          <textarea class="area" style="width: 70vw;" name="detail" rows="6" cols="36">
+          </textarea>
+          <br><br>
+          <label> State : <span style="color: red;">*</span></label>
+          <br>
+          <select onchange="print_city('cityName', this.selectedIndex);" id="state" name ="state" class="form-control" required></select>
+          <br><br>
+          <label> City : </label>
+          <br>
+          <select id ="cityName" class="form-control"  name="city"></select>
+          <script language="javascript">print_state("state");</script>
+                    <br><br>
+          <label> Contact Details : <span style="color: red;">*</span></label> <br/>
+          <br>
+          <input type="text" required name="phone" id="name" style="width: 70vw;" placeholder="Enter Your Phone Number">
+          <br><br>
+          <div class="submitb" style="display: flex; flex-direction: row; justify-content: space-around;width:45vw">
+          <input type="submit" name="submit" id="submit" value="Submit">
+        </div>
+        </form>
+
+      </div>
+
+    </div>
+    <%- include("partials/footer") %>

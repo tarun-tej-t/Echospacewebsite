@@ -1,0 +1,371 @@
+<style>
+#myBtn {
+    display: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    z-index: 99;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: #006B96;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 4px;
+  }
+  
+  #myBtn:hover {
+    background-color: #555;
+  }
+
+
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+.footer-section {
+background: #006B96;
+position: relative;
+}
+.footer-cta {
+border-bottom: 1px solid #373636;
+}
+.single-cta i {
+color: #000000;
+font-size: 30px;
+float: left;
+margin-top: 8px;
+}
+.cta-text {
+padding-left: 15px;
+display: inline-block;
+}
+.cta-text h4 {
+color: #fff;
+font-size: 20px;
+font-weight: 600;
+margin-bottom: 2px;
+}
+.cta-text span {
+color: white;
+font-size: 15px;
+}
+.footer-content {
+position: relative;
+z-index: 2;
+}
+.footer-pattern img {
+position: absolute;
+top: 0;
+left: 0;
+height: 330px;
+background-size: cover;
+background-position: 100% 100%;
+}
+.footer-logo {
+margin-bottom: 30px;
+}
+.footer-logo img {
+  max-width: 200px;
+}
+.footer-text p {
+margin-bottom: 14px;
+font-size: 14px;
+    color: #ffffff;
+line-height: 28px;
+}
+.footer-social-icon span {
+color: #fff;
+display: block;
+font-size: 20px;
+font-weight: 700;
+font-family: 'Poppins', sans-serif;
+margin-bottom: 20px;
+}
+.footer-social-icon a {
+color: #fff;
+font-size: 16px;
+margin-right: 15px;
+}
+.footer-social-icon i {
+height: 40px;
+width: 40px;
+text-align: center;
+line-height: 38px;
+border-radius: 50%;
+}
+.facebook-bg{
+background: #3B5998;
+}
+.twitter-bg{
+background: #55ACEE;
+}
+.google-bg{
+background: #000000;
+}
+.footer-widget-heading h3 {
+color: #fff;
+font-size: 20px;
+font-weight: 600;
+margin-bottom: 40px;
+position: relative;
+}
+.footer-widget-heading h3::before {
+content: "";
+position: absolute;
+left: 0;
+bottom: -15px;
+height: 2px;
+width: 50px;
+background: #000000;
+}
+.footer-widget ul li {
+display: inline-block;
+float: left;
+width: 50%;
+margin-bottom: 12px;
+}
+.footer-widget ul li a:hover{
+color: #ff5e14;
+}
+.footer-widget ul li a {
+color: #878787;
+text-transform: capitalize;
+}
+.subscribe-form {
+position: relative;
+overflow: hidden;
+}
+.subscribe-form input {
+width: 100%;
+padding: 14px 28px;
+background: #006B96;
+border: 1px solid #2E2E2E;
+color: #fff;
+}
+.subscribe-form button {
+  position: absolute;
+  right: 0;
+  background: #000000;
+  padding: 13px 20px;
+  border: 1px solid #000000;
+  top: 0;
+}
+.subscribe-form button i {
+color: #fff;
+font-size: 22px;
+transform: rotate(-6deg);
+}
+.copyright-area{
+background: #ACD4FF;
+padding: 25px 0;
+}
+.copyright-text p {
+margin: 0;
+font-size: 14px;
+color: #050000;
+}
+.copyright-text p a{
+color: #000000;
+font-weight: 900;
+}
+.footer-menu li {
+display: inline-block;
+margin-left: 20px;
+}
+.footer-menu li:hover a{
+color: #000000;
+}
+.footer-menu li a {
+font-size: 14px;
+color: #878787;
+}
+
+#Usefullinks{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+@media screen and (max-width:991px){
+
+    #Usefullinks{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+}
+  </style>
+
+<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+<script>
+    //Get the button
+    var mybutton = document.getElementById("myBtn");
+    
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {scrollFunction()};
+    
+    function scrollFunction() {
+        var scrollBottom=document.body.scrollHeight+document.body.scrollTop;
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20 ) {
+        mybutton.style.display = "block";
+      } else {
+        mybutton.style.display = "none";
+      }
+    }
+    
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+    </script>
+    
+<footer id="footer" class="footer-section">
+    <div class="container">
+       
+        <div class="footer-content pt-5 pb-5">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 mb-50">
+                    <div class="footer-widget">
+                        <div class="footer-logo">
+                            <a href="index.html"><img src="images/logo-ring.png" class="img-fluid" style="width:80px"
+                                    alt="logo"><span
+                                    style="font-size:30px;color:white;font-weight: 900;">Echospace</span></a>
+                        </div>
+                        <div class="footer-text">
+                            <p>Let your voice, echo from your place.<br/>Echospace is a social impact platform on a mission to fix "give and ask" approach of
+                                India at the moment (eg. Covid help requests and services). In order to increase an
+                                impact for every class of people, we believe that this market needs a change.</p>
+                        
+                            </div>
+<br/>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 mb-50">
+                    <div class="footer" >
+                        <div id="Usefullinks">
+                            <div>
+                                <div class="footer-widget-heading">
+                                    <h3>Useful Links</h3>
+                                </div>
+                                <ul style="list-style: none;">
+                                    <li><div class="dropdown1">
+                                        <button class="dropbtn">Write Yout Post</button>
+                                        <div class="dropdown-content">
+                                        <a href="post-services" >To provide help/services</a>
+                                
+                                        <div class="dropdown2">
+                                            <button class="dropbtn2">To seek Help</button>
+                                            <div class="dropdown-content2">
+                                            <a href="post">Covid19</a>
+                                            <a href="post-ndc">Natural Disaster crisis</a>
+                                            <a href="post-ue">Unemployment</a>
+                                            </div>
+                                          </div>
+                                
+                                        </div>
+                                      </div>
+                                      </li>
+                                    <li><div class="dropdown1">
+                                        <button class="dropbtn">Help Now</button>
+                                        <div class="dropdown-content">
+                                            <a href="feed">Covid19</a>
+                                            <a href="feed-ndc">Natural Disaster Crisis</a>
+                                            <a href="feed-ue">Unemployment</a>
+                                        </div>
+                                
+                                
+                                    </div>
+                                </li>
+                                    <li><a href="services"> <button class="dropbtn">Services</button></a></li>
+                                
+                                    <br/><br/>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+          
+                </div><br/>
+                <div class="col-xl-4 col-lg-4 mb-50" style="padding-left: 5%;">
+                    <div id="Usefullinks">
+                        <div>
+                            <div class="footer-widget-heading">
+                                <h3>Contact</h3>
+                            </div>
+                            <div class="single-cta">
+                                <i class="fas fa-phone"></i>
+                                <div class="cta-text">
+                                    <h4>Call us</h4>
+                                    <span>083298 90511
+                                    </span>
+                                </div>
+                            </div><br/>
+                            <div class="single-cta">
+                                <i class="far fa-envelope-open"></i>
+                                <div class="cta-text">
+                                    <h4>Mail us</h4>
+                                    <span>
+                                      team@echospace.in
+                                    </span>
+                                </div>
+                            </div><br/>
+                            <div class="single-cta">
+                                <i class="fas fa-users"></i>
+                                <div class="cta-text">
+                                    <h4>Follow us</h4>
+                                    <span>
+                                        <a href="https://www.facebook.com/echospace.in" target="_blank" style="color: aliceblue;">Facebook</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  <div class="footer-widget">
+                            <div class="footer-widget-heading">
+                                <h3>Subscribe</h3>
+                            </div>
+                            <div class="footer-text mb-25">
+                                <p>Don’t miss to subscribe to our new feeds, kindly fill the form below.</p>
+                            </div>
+                            <div class="subscribe-form">
+                                <form action="#">
+                                    <input type="text" placeholder="Email Address">
+                                    <button><i class="fab fa-telegram-plane"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                     -->
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="copyright-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 text-center text-lg" >
+                    <div class="copyright-text" >
+                        <p style="z-index: 19999999999999999999990000000;">Copyright &copy; 2021, All Right Reserved by<a href="https://www.echospace.in/"> Echospace </a>
+                        </p>
+                    </div>
+                </div>
+                <!-- <div class="col-xl-6 col-lg-6 d-none d-lg-block text-right">
+                    <div class="footer-menu">
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Terms</a></li>
+                            <li><a href="#">Privacy</a></li>
+                            <li><a href="#">Policy</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+</footer>
+</body>
+
+</html>

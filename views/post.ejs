@@ -1,0 +1,94 @@
+<%- include("partials/headerlogout") %>
+
+<div class="main">
+  <h1 class="heading">Post to Seek Help related to Covid19</h1>
+
+<% if(typeof postalert != 'undefined'){%>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+ Please rectify the following details before posting
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+ <span aria-hidden="true"></span>
+     </button>
+   </div>
+  <% postalert.forEach(function(posterror){%>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+   <%=posterror.msg %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+<span aria-hidden="true"></span>
+    </button>
+  </div>
+  <%})%>
+  <% } %>
+
+
+
+<form action="/post" method="post">
+  <div class="form-group">
+    <label>Patient Name<span style="color: red;">*</span></label>
+    <input  required class="form-control" type="text" name="name" />
+
+    <label>Age</label>
+    <input class="form-control" type="text" name="age" />
+
+  
+
+    <label>State<span style="color: red;">*</span></label>
+    <select onchange="print_city('cityName', this.selectedIndex);" id="state" name ="state" class="form-control" required></select>
+
+    <label>City<span style="color: red;">*</span></label>
+    <select id ="cityName" class="form-control" required name="city"></select>
+    <script language="javascript">print_state("state");</script>
+
+  
+
+    <label>Temperature in Fahrenheit ('F) </label>
+    <input class="form-control" type="text" name="temperature" />
+
+    <label>SPO2 count</label>
+    <input  class="form-control" type="text" name="count" />
+    <br />
+    <label for="requirement"> Covid test<span style="color: red;">*</span></label>
+    &nbsp;
+    &nbsp;
+    <select required name="result" id="result" >
+      <option value="Positive">Positive</option>
+      <option value="Negative">Negative</option>
+      <option value="Not done">Not done</option>
+    </select>
+    <br />
+    <br />
+    <label>Attendant Contact (10 digit)<span style="color: red;">*</span></label>
+    <input required class="form-control" type="text" name="contact" />
+    <br>
+    &nbsp;
+    &nbsp;
+    <label for="requirement"> Requirement<span style="color: red;">*</span></label>
+    <select required name="requirement" id="requirement" >
+      <option value="Beds without oxygen">Beds without oxygen</option>
+      <option value="Beds with oxygen">Beds with oxygen</option>
+      <option value="Medicine Type">Medicine Type</option>
+      <option value="Oxygen Concentrator">Oxygen Concentrator</option>
+      <option value="Plasma">Plasma</option>
+      <option value="Financial Help">Financial Help</option>
+      <option value="Other">Other</option>
+    </select>
+   
+    <br><br>
+    <label>Mention Requirement</label>
+    
+  
+    <textarea  class="form-control" name="content" rows="5" cols="30"></textarea>
+  </div>
+  <button
+    type="submit"
+    style="background-color: #006b96"
+    class="btn btn-primary"
+    name="postbutton"
+  >
+    Publish
+  </button>
+</form>
+<br/><br/>
+</div>
+
+<%- include("partials/footer") %>

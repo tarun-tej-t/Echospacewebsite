@@ -1,0 +1,77 @@
+<%- include("partials/headerlogout") %>
+
+<div class="main">
+  <h1 class="heading">Post to Seek Help related to Natural Disaster crisis</h1>
+
+<% if(typeof postalert != 'undefined'){%>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+ Please rectify the following details before posting
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+ <span aria-hidden="true"></span>
+     </button>
+   </div>
+  <% postalert.forEach(function(posterror){%>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+   <%=posterror.msg %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+<span aria-hidden="true"></span>
+    </button>
+  </div>
+  <%})%>
+  <% } %>
+
+
+
+<form action="/post-ndc" method="post">
+  <div class="form-group">
+    <label for="ndt">Natural Disaster Type<span style="color: red;">*</span></label>
+    &nbsp;
+    &nbsp;
+    <select required name="ndt" id="result" >
+      <option value="Cyclone">Cyclone</option>
+      <option value="Earthquake">Earthquake</option>
+      <option value="Floodse">Floods</option>
+      <option value="Landslides">Landslides</option>
+      <option value="Other">Other</option>
+    </select>
+    <br />
+    <br />
+    <label>Name of the affected person<span style="color: red;">*</span></label>
+    <input  required class="form-control" type="text" name="name" />
+
+    <label>Age</label>
+    <input class="form-control" type="text" name="age" />
+
+  
+
+    <label>State<span style="color: red;">*</span></label>
+    <select onchange="print_city('cityName', this.selectedIndex);" id="state" name ="state" class="form-control" required></select>
+
+    <label>City<span style="color: red;">*</span></label>
+    <select id ="cityName" class="form-control" required name="city"></select>
+    <script language="javascript">print_state("state");</script>
+
+  
+    <label>Attendant Contact (10 digit)<span style="color: red;">*</span></label>
+    <input required class="form-control" type="text" name="contact" />
+    <br>
+
+   
+    <label>Explain the situation in few lines:</label>
+    
+  
+    <textarea  class="form-control" name="content" rows="5" cols="30"></textarea>
+  </div>
+  <button
+    type="submit"
+    style="background-color: #006b96"
+    class="btn btn-primary"
+    name="postbutton"
+  >
+    Publish
+  </button>
+</form>
+<br/><br/>
+</div>
+
+<%- include("partials/footer") %>

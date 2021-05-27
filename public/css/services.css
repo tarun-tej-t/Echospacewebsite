@@ -1,0 +1,98 @@
+*{
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+  div.top{
+    width: 450px;
+    margin: 50px auto 50px auto;
+  }
+  
+  h2{
+    text-align: center;
+    padding: 20px;
+    font-family: sans-serif;
+    color: #fff;
+  }
+  
+  div.heads{
+    background-color: #006b96;
+    border-radius: 10px;
+  }
+  div.register{
+    background-color: #f4f4f4;
+    width: 100%;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 1px solid #bdc7c9;
+    color: #194350;
+  }
+  
+  form#register{
+    margin: 40px;
+  }
+  label{
+    font-family: sans-serif;
+    font-size: 18px;
+  }
+  input#name{
+    width: 350px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    outline: 0;
+    padding: 7px;
+    background-color: #fff;
+  }
+  
+  input#submit{
+    width: 200px;
+    padding: 7px;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: 600;
+    border-radius: 4px;
+    border: none;
+    background-color: #006b96;
+    color: #fff;
+    cursor: pointer;
+    border: 1px solid #79a3b1;
+    margin-bottom: 20px;
+  }
+  input#submit:hover{
+    background-color: #a6d6d6;
+    color: #194350;
+  }
+  
+  .submitb{
+  
+    margin-left: 22%;
+  
+  }
+  .drop{
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    outline: 0;
+    padding: 7px;
+    background-color: #fff;
+  }
+  
+  .type{
+      width: 350px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    outline: 0;
+    padding: 7px;
+    background-color: #fff;
+  }
+  
+  .area{
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    outline: 0;
+    padding: 7px;
+    background-color: #fff;
+  }
+  
+ 

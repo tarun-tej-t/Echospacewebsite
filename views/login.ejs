@@ -1,0 +1,28 @@
+<%- include("partials/header") %>
+
+
+
+<div style="height: 95vh;">
+    
+        <div id="logreg-forms" >
+            <form action="/login" method="POST" class="form-signin">
+                <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">Login</h1>
+                <!--<div class="social-login">-->
+                <!--    <a href="/auth/google" role="button" class="btn google-btn social-btn" style="margin-left: 100px;" ><span><i class="fab fa-google"></i> Sign in with Google</span> </a>-->
+                <!--</div>-->
+                <!--<p style="text-align:center"> OR  </p>-->
+                <input name="username" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+                <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+    
+                <button class="btn btn-success btn-block " type="submit"><i class="fas fa-sign-in-alt"></i> Sign in</button>
+    
+                <hr>
+                <!-- <p>Don't have an account!</p>  -->
+                <a class="btn btn-primary btn-block" type="button" id="btn-signup" href="register" style="color: #fff;" ><i class="fas fa-user-plus"></i> Sign up New Account</a>
+                </form>
+        </div>
+</div>
+    
+    
+
+    <%- include("partials/footer") %>
