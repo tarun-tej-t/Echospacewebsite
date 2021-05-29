@@ -35,10 +35,16 @@
           Type of Job required: <%=user.Jyl%>
         </p>
         <div class="row">
-          <div class="col-8" style="  padding-left: 15px; padding-top: 10px;">
-            <p style="text-align: justify;word-break: break-word;">
+          <div class="col-8" style="  padding-left: 15px; ">
+            <br/>
+           
+            <%if(user.EorS){%>
+              Previous experience/Skills: <%=user.EorS%>
+          <%}%>
+            <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
               <%=user.content%>
             </p>
+           
             <br>
             <%if(user.contact){%>
               Contact : <%=user.contact%>
@@ -53,10 +59,8 @@
                 Age: <%=user.age%>
             <%}%>
               
-                <br />
-                <%if(user.EorS){%>
-                    Previous experience/Skills: <%=user.EorS%>
-                <%}%>
+              
+              
                   <br />
                  
             </p>
