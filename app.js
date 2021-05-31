@@ -1,6 +1,6 @@
 //jshint esversion:6
 require("dotenv").config();
-
+var nodemailer = require('nodemailer');
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -55,8 +55,9 @@ const userSchema = new mongoose.Schema({
   lastName:{    
     type:String,
     
-  }
-  
+  },
+  uniqueString:String,
+  isValid: Boolean
  
 });
 
@@ -67,16 +68,81 @@ const User = mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(function (user, done) {
+// passport.serializeUser(function (user, done) {
 
-  done(null, user.id);
-});
+//   done(null, user.id);
+// });
 
-passport.deserializeUser(function (id, done) {
-  User.findById(id, function (err, user) {
-    done(err, user);
-  });
-});
+// passport.deserializeUser(function (id, done) {
+//   User.findById(id, function (err, user) {
+//     done(err, user);
+//   });
+// });
+passport.serializeUser(User.serializeUser());
+  
+  passport.deserializeUser(User.deserializeUser());
+
+  const randString=()=>{
+    const len=8;
+    let randStr='';
+    for(let i=0;i<len;i++){
+        const ch=Math.floor((Math.random()*10)+1);
+        randStr+=ch;
+    }
+    return randStr;
+  }
+const sendMail=(username,uniqueString)=>{
+  var transporter = nodemailer.createTransport({
+   
+    host: "mail.echospace.in",
+    port: 465,
+    secure: false,
+      auth: {
+        user: 'verification@echospace.in',
+        pass: 'echospace@123'
+      }
+    });
+    
+    var mailOptions = {
+      from: 'Echospace Team',
+      to: username,
+      subject: 'Email verification ',
+      html: `Press <a href=http://localhost:3000/verify/${uniqueString}>here</a> to verify your email.`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+}
+const sendMailreset=(username,uniqueString)=>{
+  var transporter = nodemailer.createTransport({
+    
+    service:'gmail',
+      auth: {
+        user: 'thadanataruntej@gmail.com',
+        pass: 'TTTARUNtej@2001'
+      }
+    });
+    
+    var mailOptions = {
+      from: 'Echospace Team',
+      to: username,
+      subject: 'Sending Email using Node.js',
+      html: `Press <a href=http://localhost:3000/reset/${username}>here</a> to verify your email.`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+}
 
 passport.use(
   new GoogleStrategy(
@@ -96,7 +162,7 @@ passport.use(
         }
         else{
           passport.authenticate("local")( function (req, res) {
-            res.redirect("/feed");
+            res.redirect("/about");
           });
         }
       }
@@ -112,44 +178,168 @@ passport.use(
 );
 
 app.post("/register", function (req, res) {
+  const randoms=randString();
+  const username=req.body.username;
+  const newUser=new User({
+    username:req.body.username,
+    uniqueString:randoms,
+    isValid:false,
+    password:req.body.password,
+    firstName:req.body.firstName,
+    lastName:req.body.lastName
+});
+User.register(newUser,req.body.password,async function (err,user) {
+  if(err){
+      return res.redirect("/register");
+  }
+  try{
+      await sendMail(username,randoms);
+      res.write('<h1>Check your email</h1>');
+  }
+  catch(err){
+    console.log(err);
+      res.redirect("/register");
+  }
   
-  User.register(
-    { username: req.body.username,firstName:req.body.firstName,
-      lastName:req.body.lastName,time: new Date() },
-    req.body.password,
-    function (err, user) {
-      if (err) {
-        console.log(err);
-        res.redirect("/register");
-      } else {
-        passport.authenticate("local")(req, res, function () {
-          res.redirect("/feed");
-        });
-      }
-    }
-  );
 });
 
-app.post("/login", function (req, res) {
-  const user = new User({
-    username: req.body.username,
-    password: req.body.password,
-  });
-  req.login(user, function (err) {
-    if (err) {
-      console.log(err);
-      res.redirect("/login");
-    } else {
-      passport.authenticate("local")(req, res, function () {
-        res.redirect("/about");
-      });
+
+});
+
+app.get('/verify/:uniqueString',async(req,res)=>{
+ 
+  try{
+      const user=await User.findOne({uniqueString:(req.params.uniqueString)});
+      if(user){
+          user.isValid=true;
+          await user.save();  
+          res.write('<h1>Email Verified , Please log in <a href="/login">here</a></h1>');   
+      }
+      else{
+          console.log("Could not register");
+          res.write('<h1>Wrong OTP, try again</h1>');
+      }
+  }
+  catch(error){
+      console.log(error);
+      res.redirect("/register");
+  }
+  
+  
+});
+app.get('/reset/:username',async(req,res)=>{
+ 
+  try{
+      const user=await User.findOne({username:(req.params.username)});
+      if(user){
+          res.redirect("/resetpassword");  
+      }
+      else{
+          
+          res.write('<h1>Could not find user</h1>');
+      }
+  }
+  catch(error){
+      console.log(error);
+      res.redirect("/register");
+  }
+  
+  
+});
+app.get("/resetpassword",function(req,res){
+  res.render("resetpassword");
+});
+app.post("/resetpassword",async function(req,res,next){
+
+  try {
+    var username = req.body.username;
+    var password = req.body.password;
+    var user = await User.findOne({username:req.body.username});
+    user.setPassword(password, (error, user) => {
+        if (error) {
+            return next(error);
+        }
+        user.save((err, user) => {
+            if (error) {
+                return next(error);
+            }
+            passport.authenticate('local', function(error, user, info) {
+                console.log("error", error);
+                console.log("user", user);
+                console.log("info", info);
+                if (error) {
+                    return next(error);
+                }
+                if (!user) {
+                    return handleError(res, "There was a problem resetting your password.  Please try again.", {error_code: 401, error_message: "There was a problem resetting your password.  Please try again."}, 401);
+                }
+                req.logIn(user, function(error) {
+                    if (error) {
+                        return next(error);
+                    }
+                    return res.redirect('/services');
+                });
+            })(req, res, next);
+        });
+    });
+} catch(error) {
+    console.error(error);
+    handleError(res, error.message, "/reset");
+}
+
+
+ 
+  User.findOne({username:req.body.username},function(err,user){
+    if(user){
+      user.setPassword(req.body.password,function(err){
+        if(!err){
+          res.redirect("/login");
+        }
+      })
     }
-  });
+  })
+  
+});
+
+// app.post("/register", function (req, res) {
+  
+//   User.register(
+//     { username: req.body.username,firstName:req.body.firstName,
+//       lastName:req.body.lastName,time: new Date() },
+//     req.body.password,
+//     function (err, user) {
+//       if (err) {
+//         console.log(err);
+//         res.redirect("/register");
+//       } else {
+//         passport.authenticate("local")(req, res, function () {
+//           res.redirect("/feed");
+//         });
+//       }
+//     }
+//   );
+// });
+
+app.get("/forgot",function(req,res){
+  res.render("forgot");
+});
+app.post("/forgot",function(req,res){
+  const randoms=randString();
+  const username=req.body.username;
+User.findOne({username:req.body.username},async function(err,user){
+  if(user){
+    await sendMailreset(username,randoms);
+    res.write('<h1>Check your email</h1>');
+  }
+  else{
+    res.write('<h1>Account does not exist</h1>');
+  }
+})
 });
 
 app.get("/logout", function (req, res) {
   req.logout();
-  res.redirect("/feed");
+  res.redirect("/about");
 });
 
 app.get(
@@ -431,13 +621,7 @@ const PostSer = mongoose.model("PostSer", postServiceSchema);
 
 
 
-app.get("/otherss", function (req, res) {
-  PostSer.find({}, function (err, foundPostser) {
-    res.render("otherss", {
-      postsers: foundPostser
-    });
-  });
-});
+
 
 
 
@@ -807,4 +991,4 @@ app.get("/about", function (req, res) {
 
 
 
-app.listen(3000);
+app.listen(3001);

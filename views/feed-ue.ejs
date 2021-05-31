@@ -1,6 +1,5 @@
 <%- include('partials/header') %>
-
-<!-- <style>
+  <!-- <style>
   .fpbg{
     /* background-image: url("/images/feed1.jpg"); */
     background-color: #F3F2EF;
@@ -12,17 +11,21 @@
   }
   
     </style> -->
-  
-    <div class="fpbg">
 
-  <br>
-  <% posthelpues.reverse().forEach(function(user){ %>   
-          <div style="padding: 2%" class="jumbotron">
+  <div class="fpbg">
+    <br>
+    <% posthelpues.reverse().forEach(function(user){ %>
+      <div style="padding: 2%" class="jumbotron">
         <div class="row">
           <div class="col-8">
             <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
               <%=user.name%>
             </h2>
+
+            <%if(user.age){%>
+              Age: <%=user.age%>
+                <%}%>
+
           </div>
           <div class="col-4">
             <p style="display: table-cell" style="color: black;font-weight: 900;font-variant: small-caps;">
@@ -32,59 +35,52 @@
         </div>
         <hr />
         <p style="font-weight: bold" class="first">
-          Type of Job required: <%=user.Jyl%>
+          Sector: <%=user.sector%> | Type of Job required: <%=user.Jyl%>
         </p>
         <div class="row">
-          <div class="col-8" style="  padding-left: 15px; ">
-            <br/>
-           
+          <div class="col-12" style="  padding-left: 15px; padding-top: 10px;">
+
+
             <%if(user.EorS){%>
               Previous experience/Skills: <%=user.EorS%>
-          <%}%>
-            <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
-              <%=user.content%>
-            </p>
-           
-            <br>
-            <%if(user.contact){%>
-              Contact : <%=user.contact%>
-              <%}%><br>
-              <%if(user.email){%>
-              Email : <a href="mailto:<%=user.email%>"><%=user.email%></a>  
-               <%}%>
-          </div>
-          <div class="col-4">
-            <p>
-              <%if(user.age){%>
-                Age: <%=user.age%>
-            <%}%>
-              
-              
-              
-                  <br />
-                 
-            </p>
+                <%}%>
+                  <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
+                    <%=user.content%>
+                  </p>
 
+                  <%if(user.contact){%>
+                    Contact : <%=user.contact%>
+                      <%}%><br>
+                        <%if(user.email){%>
+                          Email : <a href="mailto:<%=user.email%>">
+                            <%=user.email%>
+                          </a>
+                          <%}%>
           </div>
+
+
+
         </div>
 
 
 
-        <br />
+
 
 
         <p>
           <a href="tel:<%=user.contact%>"> Call </a>/
           <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
         </p>
-        Posted On: <small><%=user.time%></small>
-        <br/>
+        Posted On: <small>
+          <%=user.time%>
+        </small>
+        <br />
       </div>
-      <br>
+
       <% }) %>
 
 
 
-        </div>
-        </div>
-        <%- include('partials/footer') %>
+  </div>
+  </div>
+  <%- include('partials/footer') %>
