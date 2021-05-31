@@ -683,6 +683,109 @@ app.get("/services", function (req, res) {
   }
 });
 
+const profileSchema = new mongoose.Schema({
+  user : String,
+  fname: String,
+  lname: String,
+  city: String,
+  phone: String,
+  description: String
+});
+
+const UserProfile = mongoose.model("UserProfile", profileSchema);
+app.get('/profile', (req,res)=> {
+  if (req.isAuthenticated()) {
+    let userdb = req.user;
+    UserProfile.find({user : userdb.username}, (err,data) => {
+      if (!err) {
+        if(data.length === 0) {
+          let per = new UserProfile({user: userdb.username, fname: userdb.firstName, lname: userdb.lastName});
+          per.save((err)=> {
+            if(err) console.error(err);
+          });
+          res.redirect('/profiledit');
+        }
+        else {
+          res.render("profilepage", {
+            data : data
+          });
+        }
+      }
+      else {
+        console.log(err);
+        res.redirect('/profiledit');
+      }
+    });
+  }
+  else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/profiledit', (req,res) => {
+  if (req.isAuthenticated()) {
+    let userdb = req.user;
+    UserProfile.find({user: userdb.username}, (err,data)=> {
+      if (!err) {
+          res.render("edit-profilepage", {
+          fname : userdb.firstName,
+          lname : userdb.lastName,
+          username : userdb.username,
+          data: data
+        });
+      }
+      else {
+              console.log(err);
+              res.redirect("/");
+          }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+app.post('/profiledit/profiledata', (req,res) => {
+  if (req.isAuthenticated()) {
+    let userdb = req.user;
+    UserProfile.update({user: userdb.username},
+    {$set:{city: req.body.city, phone: req.body.phone, description: req.body.description}},{multi:false}, (err)=> {
+      if (err) {
+              console.log(err);
+              res.status(500).send('An error occurred', err);
+          }
+    });
+    res.redirect('/profile');
+  }
+  else {
+    res.redirect('/login');
+  }
+});
+app.get('/displayprofile', (req,res)=> {
+  if (req.isAuthenticated()) {
+    req.query.user
+    UserProfile.find({_id: req.query.user}, (err,data)=>{
+      if (err) {
+              console.log(err);
+              res.status(500).send('An error occurred', err);
+      }
+      else {
+        if (data.length === 0) {
+          res.status(404).send('NOT FOUND');
+        }
+        else {
+          res.render("display-profile", {
+            data: data
+          });
+        }
+      }
+    });
+  }
+  else {
+    res.redirect('/login');
+  }
+});
+
 
 
 
