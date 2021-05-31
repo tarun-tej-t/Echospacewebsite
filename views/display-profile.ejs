@@ -1,0 +1,44 @@
+<%- include("partials/headerlogout") %>
+
+<style>
+  td {
+    text-align: left;
+    font-size: 20px;
+  }
+  .head-page {
+    font-size: 30px;
+  }
+  table {
+      table-layout:fixed;
+      width:100%;
+  }
+  td {
+      white-space: nowrap;
+      overflow: auto;
+  }
+</style>
+<div class="container-fluid">
+  <div>
+    <div class="container border" style="background-color: #F3F3F3;height: 95vh;">
+    <div class="text-center" style="padding-top: 20px; padding-bottom: 20px;">
+      <span class="head-page"><%- data[0].fname %><%- data[0].lname %></span>
+    </div>
+      <br />
+      <br />
+      <div class="container-fluid">
+        <table class="table">
+          <tr><td>first name: </td><td><%- data[0].fname %> </td></tr>
+          <tr><td>last name: </td><td><%- data[0].lname %> </td></tr>
+          <tr><td>About : </td><td><%- data[0].description %> </td></tr>
+          <tr><td>city/town/village name: </td><td><%- data[0].city %> </td></tr>
+          <tr><td>Contact Information: </td><td><%- data[0].phone %> </td></tr>
+        </table>
+      </div>
+    </div>
+    <br />
+  </div>
+</div>
+
+<div class="container-fluid">
+<%- include("partials/footer") %>
+</div>
