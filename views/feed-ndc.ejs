@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include('partials/headerlogout') %>
 
 <!-- <style>
   .fpbg{
@@ -11,8 +11,73 @@
   
   }
   
+    </style> -->
+    <style>
+      /* popover */
+      details[data-popover] {
+        display: inline;
+        position: relative;
+      }
+
+      details[data-popover]>summary:focus {
+        outline: none;
+      }
+
+      details[data-popover]>summary::-webkit-details-marker {
+        display: none;
+      }
+
+      details[data-popover]>summary {
+        list-style: none;
+        text-decoration: underline dotted #006B96;
+      }
+
+      details[data-popover]>summary+* {
+        position: absolute;
+        display: block;
+        z-index: 1;
+        width: 45vw;
+        border: solid 1px #006B96;
+        border-radius: 5%;
+        padding: 10px;
+        background: white;
+      }
+
+      details[data-popover]>*+* {
+        /* hide detail elements that would ruin the popover */
+        display: none;
+      }
+
+      details[data-popover="up"]>summary+* {
+        bottom: calc(0.5rem + 100%);
+        right: 50%;
+        transform: translateX(50%);
+      }
+
+      details[data-popover="down"]>summary+* {
+        top: calc(0.5rem + 100%);
+        right: 50%;
+        transform: translateX(50%);
+      }
+
+      details[data-popover="left"]>summary+* {
+        right: calc(1rem + 100%);
+        bottom: 50%;
+        transform: translateY(50%);
+      }
+
+      details[data-popover="right"]>summary+* {
+        left: calc(0.3rem + 100%);
+        bottom: 50%;
+        transform: translateY(50%);
+      }
+
+      /* wrapper setup */
+      .wrapper {
+        width: 100%;
+
+      }
     </style>
-   -->
     <div class="fpbg">
 
   <br>
@@ -23,6 +88,12 @@
             <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
               <%=user.name%>
             </h2>
+           
+           
+              Age: <%=user.age%>
+                
+             
+          
           </div>
           <div class="col-4">
             <p style="display: table-cell" style="color: black;font-weight: 900;font-variant: small-caps;">
@@ -32,25 +103,30 @@
         </div>
         <hr />
         <p style="font-weight: bold" class="first">
-          Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
+          Natural disaster type : <%=user.ndt%> 
         </p>
         <div class="row">
-          <div class="col-8" style="  padding-left: 15px; padding-top: 10px;">
+          <div class="col-12" style="  padding-left: 15px; padding-top: 10px;">
             <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
               <%=user.content%>
             </p>
             <br>
-            Contact : <%=user.contact%>
+            <div class="wrapper">
+              <details data-popover="right">
+                <summary>
+                  Click here to Contact
+                </summary>
+                <div>
+                  <p>
+                    Contact : <%=user.contact%>
+                  </p>
+                  <a href="tel:<%=user.contact%>"> Call </a>/
+                  <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
+                </div>
+              </details>
+            </div>
           </div>
-          <div class="col-4">
-            <p>
-           
-              Age: <%=user.age%>
-                <br />
-             
-            </p>
-
-          </div>
+         
         </div>
 
 
@@ -58,10 +134,7 @@
         <br />
 
 
-        <p>
-          <a href="tel:<%=user.contact%>"> Call </a>/
-          <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
-        </p>
+        
         Posted On: <small><%=user.time%></small>
         <br/>
       </div>

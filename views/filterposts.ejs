@@ -1,5 +1,83 @@
-<%- include('partials/header') %>
+<%- include('partials/headerlogout') %>
   <%- include('partials/subbar')  %>
+  <style>
+    /* popover */
+    details[data-popover] {
+      display: inline;
+      position: relative;
+    }
+
+    details[data-popover]>summary:focus {
+      outline: none;
+    }
+
+    details[data-popover]>summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details[data-popover]>summary {
+      list-style: none;
+      text-decoration: underline dotted #006B96;
+    }
+
+    details[data-popover]>summary+* {
+      position: absolute;
+      display: block;
+      z-index: 1;
+      width: 45vw;
+      animation: spin 3s linear infinite;
+      border-radius: 10%;
+      padding: 10px;
+      background: white;
+    }
+    @keyframes spin { 
+      0%{
+        border: dotted 1px #006B96;
+      }
+      50%{
+        border: dashed 2px #006B96;
+      }
+100% { 
+  border: groove 3px #006B96;
+}
+}
+
+    details[data-popover]>*+* {
+      /* hide detail elements that would ruin the popover */
+      display: none;
+    }
+
+    details[data-popover="up"]>summary+* {
+      bottom: calc(0.5rem + 100%);
+      right: 50%;
+      transform: translateX(50%);
+    }
+
+    details[data-popover="down"]>summary+* {
+      top: calc(0.5rem + 100%);
+      right: 50%;
+      transform: translateX(50%);
+    }
+
+    details[data-popover="left"]>summary+* {
+      right: calc(1rem + 100%);
+      bottom: 50%;
+      transform: translateY(50%);
+    }
+
+    details[data-popover="right"]>summary+* {
+      left: calc(0.3rem + 100%);
+      bottom: 50%;
+      transform: translateY(50%);
+    }
+
+    /* wrapper setup */
+    .wrapper {
+      width: 100%;
+
+    }
+  </style>
+
     <%var count=0; posthelps.reverse().forEach(function(user){
        %>   
     
@@ -7,12 +85,28 @@
       <div style="padding: 2%" class="jumbotron">
         <div class="row">
           <div class="col-8">
-            <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">   
-              <%=user.name%>
-            </h2> 
+            <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
+              <%=user.name%> </h2>
+              <p>
+           
+                <%if(user.age){%>
+                  Age: <%=user.age%> ;&ensp;
+                  <% } %> 
+                  
+                  <%if(user.temperature){%>
+                  Temperature: <%=user.temperature%>°F ;&ensp;
+                  <%}%>
+                    
+                    <%if(user.count){%>
+                    SPO2 Count: <%=user.count%>
+                    <%}%>
+              </p>
+           
           </div>
           <div class="col-4">
-            <p style="display: table-cell">
+            <p style="display: table-cell" style="color: black;font-weight: 900;font-variant: small-caps;">
+           
+  
               <%=user.city%> , <%=user.state%>
             </p>
           </div>
@@ -22,26 +116,27 @@
           Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
         </p>
         <div class="row">
-          <div class="col-8" style="  padding-left: 15px; padding-top: 10px;white-space: pre-line;">
-            <p style="text-align: justify;">
+          <div class="col-12" style="  padding-left: 15px;">
+            <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
               <%=user.content%>
             </p>
-            <br>
-            Contact : <%=user.contact%>
+           <div class="wrapper">
+              <details data-popover="right">
+                <summary>
+                  Click here to Contact
+                </summary>
+                <div>
+                  <p>
+                    Contact : <%=user.contact%>
+                  </p>
+                  <a href="tel:<%=user.contact%>"> Call </a>/
+                  <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
+                </div>
+              </details>
+            </div>
           </div>
           <div class="col-4">
-            <p>
-              Age: <%=user.age%>
-                <br />
-                <%if(user.temperature){%>
-                Temperature: <%=user.temperature%>°F
-                <%}%>
-                  <br />
-                  <%if(user.count){%>
-                  SPO2 Count: <%=user.count%>
-                  <%}%>
-            </p>
-
+           
           </div>
         </div>
 
@@ -50,234 +145,287 @@
         <br />
 
 
-        <p>
-          <a href="tel:<%=user.contact%>"> Call </a>/
-          <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
-        </p>
-      </div>
-      <br>
-   <%} else if(user.state=== statesearch && user.requirement===requirementsearch && !citysearch){count+=1; %>
-      <div style="padding-top: 2%" class="jumbotron">
-        <div class="row">
-          <div class="col-8">
-            <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">   
-              <%=user.name%>
-            </h2> 
-          </div>
-          <div class="col-4">
-            <p style="display: table-cell">
-              <%=user.city%> , <%=user.state%>
-            </p>
-          </div>
-        </div>
-        <hr />
-        <p style="font-weight: bold" class="first">
-          Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
-        </p>
-        <div class="row">
-          <div class="col-8" style="  padding-left: 15px; padding-top: 10px;white-space: pre-line;">
-            <p style="text-align: justify;">
-              <%=user.content%>
-            </p>
-            <br>
-            Contact : <%=user.contact%>
-          </div>
-          <div class="col-4">
-            <p>
-              Age: <%=user.age%>
-                <br />
-                <%if(user.temperature){%>
-                Temperature: <%=user.temperature%>°F
-                <%}%>
-                  <br />
-                  <%if(user.count){%>
-                  SPO2 Count: <%=user.count%>
-                  <%}%>
-            </p>
-
-          </div>
-        </div>
-
-
-
-        <br />
-
-
-        <p>
-          <a href="tel:<%=user.contact%>"> Call </a>/
-          <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
-        </p> Posted On: <small><%=user.time%></small>
+       
+        Posted On: <small><%=user.time%></small>
         <br/>
       </div>
       <br>
-  
-      <%}  else if(user.state=== statesearch && user.city===citysearch && !requirementsearch){count+=1; %>
-        <div style="padding-top: 2%" class="jumbotron">
-          <div class="row">
-            <div class="col-8">
-              <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">   
-                <%=user.name%>
-              </h2> 
-            </div>
-            <div class="col-4">
-              <p style="display: table-cell">
-                <%=user.city%> , <%=user.state%>
-              </p>
-            </div>
-          </div>
-          <hr />
-          <p style="font-weight: bold" class="first">
-            Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
-          </p>
-          <div class="row">
-            <div class="col-8" style="  padding-left: 15px; padding-top: 10px;white-space: pre-line;">
-              <p style="text-align: justify;">
-                <%=user.content%>
-              </p>
-              <br>
-              Contact : <%=user.contact%>
-            </div>
-            <div class="col-4">
+   <%} else if(user.state=== statesearch && user.requirement===requirementsearch && !citysearch){count+=1; %>
+    <div style="padding: 2%" class="jumbotron">
+        <div class="row">
+          <div class="col-8">
+            <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
+              <%=user.name%> </h2>
               <p>
+           
                 <%if(user.age){%>
-          Age: <%=user.age%>
-          <% } %> 
-                <br />
-                <%if(user.temperature){%>
-                Temperature: <%=user.temperature%>°F
-                <%}%>
-                  <br />
-                  <%if(user.count){%>
-                  SPO2 Count: <%=user.count%>
+                  Age: <%=user.age%> ;&ensp;
+                  <% } %> 
+                  
+                  <%if(user.temperature){%>
+                  Temperature: <%=user.temperature%>°F ;&ensp;
                   <%}%>
+                    
+                    <%if(user.count){%>
+                    SPO2 Count: <%=user.count%>
+                    <%}%>
               </p>
+           
+          </div>
+          <div class="col-4">
+            <p style="display: table-cell" style="color: black;font-weight: 900;font-variant: small-caps;">
+           
   
+              <%=user.city%> , <%=user.state%>
+            </p>
+          </div>
+        </div>
+        <hr />
+        <p style="font-weight: bold" class="first">
+          Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
+        </p>
+        <div class="row">
+          <div class="col-12" style="  padding-left: 15px;">
+            <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
+              <%=user.content%>
+            </p>
+           <div class="wrapper">
+              <details data-popover="right">
+                <summary>
+                  Click here to Contact
+                </summary>
+                <div>
+                  <p>
+                    Contact : <%=user.contact%>
+                  </p>
+                  <a href="tel:<%=user.contact%>"> Call </a>/
+                  <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
+                </div>
+              </details>
             </div>
           </div>
-  
-  
-  
-          <br />
-  
-  
-          <p>
-            <a href="tel:<%=user.contact%>"> Call </a>/
-            <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
-          </p> Posted On: <small><%=user.time%></small>
-          <br/>
+          <div class="col-4">
+           
+          </div>
         </div>
-        <br>
-    
-      
+
+
+
+        <br />
+
+
+       
+        Posted On: <small><%=user.time%></small>
+        <br/>
+      </div>
+      <br>
+      <%}  else if(user.state=== statesearch && user.city===citysearch && !requirementsearch){count+=1; %>
+        <div style="padding: 2%" class="jumbotron">
+        <div class="row">
+          <div class="col-8">
+            <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
+              <%=user.name%> </h2>
+              <p>
+           
+                <%if(user.age){%>
+                  Age: <%=user.age%> ;&ensp;
+                  <% } %> 
+                  
+                  <%if(user.temperature){%>
+                  Temperature: <%=user.temperature%>°F ;&ensp;
+                  <%}%>
+                    
+                    <%if(user.count){%>
+                    SPO2 Count: <%=user.count%>
+                    <%}%>
+              </p>
+           
+          </div>
+          <div class="col-4">
+            <p style="display: table-cell" style="color: black;font-weight: 900;font-variant: small-caps;">
+           
+  
+              <%=user.city%> , <%=user.state%>
+            </p>
+          </div>
+        </div>
+        <hr />
+        <p style="font-weight: bold" class="first">
+          Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
+        </p>
+        <div class="row">
+          <div class="col-12" style="  padding-left: 15px;">
+            <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
+              <%=user.content%>
+            </p>
+           <div class="wrapper">
+              <details data-popover="right">
+                <summary>
+                  Click here to Contact
+                </summary>
+                <div>
+                  <p>
+                    Contact : <%=user.contact%>
+                  </p>
+                  <a href="tel:<%=user.contact%>"> Call </a>/
+                  <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
+                </div>
+              </details>
+            </div>
+          </div>
+          <div class="col-4">
+           
+          </div>
+        </div>
+
+
+
+        <br />
+
+
+       
+        Posted On: <small><%=user.time%></small>
+        <br/>
+      </div>
+      <br>
       <%} else if(user.requirement===requirementsearch && !statesearch){count+=1;%>
         <div style="padding: 2%" class="jumbotron">
-          <div class="row">
-            <div class="col-8">
-              <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">   
-                <%=user.name%>
-              </h2> 
-            </div>
-            <div class="col-4">
-              <p style="display: table-cell">
-                <%=user.city%> , <%=user.state%>
-              </p>
-            </div>
-          </div>
-          <hr />
-          <p style="font-weight: bold" class="first">
-            Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
-          </p>
-          <div class="row">
-            <div class="col-8" style="  padding-left: 15px; padding-top: 10px;white-space: pre-line;">
-              <p style="text-align: justify;">
-                <%=user.content%>
-              </p>
-              <br>
-              Contact : <%=user.contact%>
-            </div>
-            <div class="col-4">
+        <div class="row">
+          <div class="col-8">
+            <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
+              <%=user.name%> </h2>
               <p>
-                Age: <%=user.age%>
-                <br />
-                <%if(user.temperature){%>
-                Temperature: <%=user.temperature%>°F
-                <%}%>
-                  <br />
-                  <%if(user.count){%>
-                  SPO2 Count: <%=user.count%>
+           
+                <%if(user.age){%>
+                  Age: <%=user.age%> ;&ensp;
+                  <% } %> 
+                  
+                  <%if(user.temperature){%>
+                  Temperature: <%=user.temperature%>°F ;&ensp;
                   <%}%>
+                    
+                    <%if(user.count){%>
+                    SPO2 Count: <%=user.count%>
+                    <%}%>
               </p>
+           
+          </div>
+          <div class="col-4">
+            <p style="display: table-cell" style="color: black;font-weight: 900;font-variant: small-caps;">
+           
   
+              <%=user.city%> , <%=user.state%>
+            </p>
+          </div>
+        </div>
+        <hr />
+        <p style="font-weight: bold" class="first">
+          Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
+        </p>
+        <div class="row">
+          <div class="col-12" style="  padding-left: 15px;">
+            <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
+              <%=user.content%>
+            </p>
+           <div class="wrapper">
+              <details data-popover="right">
+                <summary>
+                  Click here to Contact
+                </summary>
+                <div>
+                  <p>
+                    Contact : <%=user.contact%>
+                  </p>
+                  <a href="tel:<%=user.contact%>"> Call </a>/
+                  <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
+                </div>
+              </details>
             </div>
           </div>
-  
-  
-  
-          <br />
-  
-  
-          <p>
-            <a href="tel:<%=user.contact%>"> Call </a>/
-            <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
-          </p> Posted On: <small><%=user.time%></small>
-          <br/>
+          <div class="col-4">
+           
+          </div>
         </div>
-        <br>
+
+
+
+        <br />
+
+
+       
+        Posted On: <small><%=user.time%></small>
+        <br/>
+      </div>
+      <br>
         <%} else if(user.state===statesearch && !requirementsearch && !citysearch){count+=1;%>
           <div style="padding: 2%" class="jumbotron">
-            <div class="row">
-              <div class="col-8">
-                <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">   
-                  <%=user.name%>
-                </h2> 
-              </div>
-              <div class="col-4">
-                <p style="display: table-cell">
-                  <%=user.city%> , <%=user.state%>
-                </p>
-              </div>
-            </div>
-            <hr />
-            <p style="font-weight: bold" class="first">
-              Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
-            </p>
-            <div class="row">
-              <div class="col-8" style="  padding-left: 15px; padding-top: 10px;white-space: pre-line;">
-                <p style="text-align: justify;">
-                  <%=user.content%>
-                </p>
-                <br>
-                Contact : <%=user.contact%>
-              </div>
-              <div class="col-4">
-                <p>
-                  Age: <%=user.age%>
-                <br />
-                <%if(user.temperature){%>
-                Temperature: <%=user.temperature%>°F
-                <%}%>
-                  <br />
-                  <%if(user.count){%>
-                  SPO2 Count: <%=user.count%>
+        <div class="row">
+          <div class="col-8">
+            <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
+              <%=user.name%> </h2>
+              <p>
+           
+                <%if(user.age){%>
+                  Age: <%=user.age%> ;&ensp;
+                  <% } %> 
+                  
+                  <%if(user.temperature){%>
+                  Temperature: <%=user.temperature%>°F ;&ensp;
                   <%}%>
-                </p>
-    
-              </div>
-            </div>
-    
-    
-    
-            <br />
-    
-    
-            <p>
-              <a href="tel:<%=user.contact%>"> Call </a>/
-              <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
-            </p> Posted On: <small><%=user.time%></small>
-            <br/>
+                    
+                    <%if(user.count){%>
+                    SPO2 Count: <%=user.count%>
+                    <%}%>
+              </p>
+           
           </div>
-          <br>
-      
+          <div class="col-4">
+            <p style="display: table-cell" style="color: black;font-weight: 900;font-variant: small-caps;">
+           
+  
+              <%=user.city%> , <%=user.state%>
+            </p>
+          </div>
+        </div>
+        <hr />
+        <p style="font-weight: bold" class="first">
+          Requirement : <%=user.requirement%> | Covid Test: <%=user.result%>
+        </p>
+        <div class="row">
+          <div class="col-12" style="  padding-left: 15px;">
+            <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
+              <%=user.content%>
+            </p>
+           <div class="wrapper">
+              <details data-popover="right">
+                <summary>
+                  Click here to Contact
+                </summary>
+                <div>
+                  <p>
+                    Contact : <%=user.contact%>
+                  </p>
+                  <a href="tel:<%=user.contact%>"> Call </a>/
+                  <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
+                </div>
+              </details>
+            </div>
+          </div>
+          <div class="col-4">
+           
+          </div>
+        </div>
+
+
+
+        <br />
+
+
+       
+        Posted On: <small><%=user.time%></small>
+        <br/>
+      </div>
+      <br>
         <% }  %>
         
       

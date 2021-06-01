@@ -12,6 +12,83 @@
 
       }
     </style> -->
+    <style>
+      /* popover */
+      details[data-popover] {
+        display: inline;
+        position: relative;
+      }
+
+      details[data-popover]>summary:focus {
+        outline: none;
+      }
+
+      details[data-popover]>summary::-webkit-details-marker {
+        display: none;
+      }
+
+      details[data-popover]>summary {
+        list-style: none;
+        text-decoration: underline dotted #006B96;
+      }
+
+      details[data-popover]>summary+* {
+        position: absolute;
+        display: block;
+        z-index: 1;
+        width: 45vw;
+        animation: spin 3s linear infinite;
+        border-radius: 10%;
+        padding: 10px;
+        background: white;
+      }
+      @keyframes spin { 
+        0%{
+          border: dotted 1px #006B96;
+        }
+        50%{
+          border: dashed 2px #006B96;
+        }
+  100% { 
+    border: groove 3px #006B96;
+  }
+}
+
+      details[data-popover]>*+* {
+        /* hide detail elements that would ruin the popover */
+        display: none;
+      }
+
+      details[data-popover="up"]>summary+* {
+        bottom: calc(0.5rem + 100%);
+        right: 50%;
+        transform: translateX(50%);
+      }
+
+      details[data-popover="down"]>summary+* {
+        top: calc(0.5rem + 100%);
+        right: 50%;
+        transform: translateX(50%);
+      }
+
+      details[data-popover="left"]>summary+* {
+        right: calc(1rem + 100%);
+        bottom: 50%;
+        transform: translateY(50%);
+      }
+
+      details[data-popover="right"]>summary+* {
+        left: calc(0.3rem + 100%);
+        bottom: 50%;
+        transform: translateY(50%);
+      }
+
+      /* wrapper setup */
+      .wrapper {
+        width: 100%;
+
+      }
+    </style>
 
     <div class="fpbgs">
       <br>
@@ -28,7 +105,10 @@
             </div>
             <div class="col-4">
               <p style="display: table-cell">
-                <%=post.city%> , <%=post.state%>
+                <%if(post.city){%>
+                  <%=post.city%>,
+                    <%}%>
+                      <%=post.state%>
               </p>
             </div>
           </div>
@@ -37,34 +117,32 @@
             <p style="font-weight: bold;" class="first">
               Type of Organization : <%=post.type%> | Service Offered : <%=post.help%>
             </p>
-         
-           
-              <p style="text-align: justify;">
-                <%=post.detail%>
-              </p>
-             <p>
-               
-                Contact : <%=post.phone%>
-             </p>
-            
-
+            <p style="text-align: justify;">
+              <%=post.detail%>
+            </p>
+            <p>
+            </p>
           </div>
-
-
-
-       
-
-
-          <p>
-            <a href="tel:<%=post.phone%>"> Call </a>/
-            <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=post.phone%>">Whatsapp</a>
-          </p>
+          <div class="wrapper">
+            <details data-popover="right">
+              <summary>
+                Click here to Contact
+              </summary>
+              <div>
+                <p>
+                  Contact : <%=post.phone%>
+                </p>
+                <a href="tel:<%=post.phone%>"> Call </a>/
+                <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=post.phone%>">Whatsapp</a>
+              </div>
+            </details>
+          </div>
           </p> Posted On: <small>
             <%=post.time%>
           </small>
           <br />
         </div>
         <br>
-    </div>  
-    <% }) %>
-      <%- include("partials/footer") %>
+
+        <% }) %></div>
+          <%- include("partials/footer") %>

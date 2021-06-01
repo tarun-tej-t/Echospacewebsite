@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include('partials/headerlogout') %>
   <!-- <style>
   .fpbg{
     /* background-image: url("/images/feed1.jpg"); */
@@ -11,10 +11,76 @@
   }
   
     </style> -->
+    <style>
+      /* popover */
+      details[data-popover] {
+        display: inline;
+        position: relative;
+      }
+
+      details[data-popover]>summary:focus {
+        outline: none;
+      }
+
+      details[data-popover]>summary::-webkit-details-marker {
+        display: none;
+      }
+
+      details[data-popover]>summary {
+        list-style: none;
+        text-decoration: underline dotted #006B96;
+      }
+
+      details[data-popover]>summary+* {
+        position: absolute;
+        display: block;
+        z-index: 1;
+        width: 45vw;
+        border: solid 1px #006B96;
+        border-radius: 5%;
+        padding: 10px;
+        background: white;
+      }
+
+      details[data-popover]>*+* {
+        /* hide detail elements that would ruin the popover */
+        display: none;
+      }
+
+      details[data-popover="up"]>summary+* {
+        bottom: calc(0.5rem + 100%);
+        right: 50%;
+        transform: translateX(50%);
+      }
+
+      details[data-popover="down"]>summary+* {
+        top: calc(0.5rem + 100%);
+        right: 50%;
+        transform: translateX(50%);
+      }
+
+      details[data-popover="left"]>summary+* {
+        right: calc(1rem + 100%);
+        bottom: 50%;
+        transform: translateY(50%);
+      }
+
+      details[data-popover="right"]>summary+* {
+        left: calc(0.3rem + 100%);
+        bottom: 50%;
+        transform: translateY(50%);
+      }
+
+      /* wrapper setup */
+      .wrapper {
+        width: 100%;
+
+      }
+    </style>
 
   <div class="fpbg">
     <br>
-    <% posthelpues.reverse().forEach(function(user){ %>
+    <% posthelpues.forEach(function(user){ %>
       <div style="padding: 2%" class="jumbotron">
         <div class="row">
           <div class="col-8">
@@ -35,7 +101,7 @@
         </div>
         <hr />
         <p style="font-weight: bold" class="first">
-          Sector: <%=user.sector%> | Type of Job required: <%=user.Jyl%>
+          Sector: <%=user.sector%>   <%if(user.Jyl){%>| Type of Job required: <%=user.Jyl%>   <%}%>
         </p>
         <div class="row">
           <div class="col-12" style="  padding-left: 15px; padding-top: 10px;">
@@ -48,14 +114,29 @@
                     <%=user.content%>
                   </p>
 
-                  <%if(user.contact){%>
-                    Contact : <%=user.contact%>
-                      <%}%><br>
+                  
+                          <div class="wrapper">
+                            <details data-popover="right">
+                              <summary>
+                                Click here to Contact
+                              </summary>
+                              <div>
+                                <p>
+                                  <%if(user.contact){%>
+                                    Contact : <%=user.contact%>
+                                      <%}%>
+                               <br/>
+                                <a href="tel:<%=user.contact%>"> Call </a>/
+                                <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
+                              </p>
                         <%if(user.email){%>
                           Email : <a href="mailto:<%=user.email%>">
                             <%=user.email%>
                           </a>
                           <%}%>
+                              </div>
+                            </details>
+                          </div>
           </div>
 
 
@@ -64,13 +145,9 @@
 
 
 
+<br/>
 
-
-
-        <p>
-          <a href="tel:<%=user.contact%>"> Call </a>/
-          <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
-        </p>
+     
         Posted On: <small>
           <%=user.time%>
         </small>

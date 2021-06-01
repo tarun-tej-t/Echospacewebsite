@@ -2,7 +2,19 @@
 
 
     <div style="height: 95vh;">
+      <% if(typeof registererr != 'undefined'){%>
+       
+       
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+         <%=registererr %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true"></span>
+          </button>
+        </div>
+       
+        <% } %>
       <div id="logreg-forms">
+
           <form action="/register" method="POST" class="form-signin">
               <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">Sign Up</h1>
               <!--<div class="social-login">-->
