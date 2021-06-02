@@ -1,6 +1,6 @@
 <%- include('partials/header') %>
 
-<!-- <style>
+    <!-- <style>
   .fpbg{
     /* background-image: url("/images/feed1.jpg"); */
     background-color: #F3F2EF;
@@ -12,79 +12,185 @@
   }
   
     </style> -->
-  
+    <style>
+        .comment {
+            margin-top: 50px;
+            background-color: white;
+            display: flex;
+            justify-self: center;
+        }
+        
+        .comment input {
+            width: 300px;
+            height: 100px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 4px;
+            background-color: #cbd6dd;
+            margin-bottom: 8px;
+        }
+        
+        .user-img {
+            margin-top: 4px;
+        }
+        
+        .reply small {
+            color: #b7b4b4
+        }
+        
+        .reply small:hover {
+            color: green;
+            cursor: pointer
+        }
+    </style>
+
     <div class="fpbg">
 
-  <br>
-  <% posthelpues.reverse().forEach(function(user){ %>   
-          <div style="padding: 2%" class="jumbotron">
-        <div class="row">
-          <div class="col-8">
-            <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
-              <%=user.name%>
-            </h2>
-          </div>
-          <div class="col-4">
-            <p style="display: table-cell" style="color: black;font-weight: 900;font-variant: small-caps;">
-              <%=user.city%> , <%=user.state%>
-            </p>
-          </div>
-        </div>
-        <hr />
-        <p style="font-weight: bold" class="first">
-          Type of Job required: <%=user.Jyl%>
-        </p>
-        <div class="row">
-          <div class="col-8" style="  padding-left: 15px; ">
-            <br/>
-           
-            <%if(user.EorS){%>
-              Previous experience/Skills: <%=user.EorS%>
-          <%}%>
-            <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
-              <%=user.content%>
-            </p>
-           
-            <br>
-            <%if(user.contact){%>
-              Contact : <%=user.contact%>
-              <%}%><br>
-              <%if(user.email){%>
-              Email : <a href="mailto:<%=user.email%>"><%=user.email%></a>  
-               <%}%>
-          </div>
-          <div class="col-4">
-            <p>
-              <%if(user.age){%>
-                Age: <%=user.age%>
-            <%}%>
-              
-              
-              
-                  <br />
-                 
-            </p>
+        <br>
+        <% posthelpues.reverse().forEach(function(user){ %>
+            <div style="padding: 2%" class="jumbotron">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
+                            <%=user.name%>
+                        </h2>
+                    </div>
+                    <div class="col-4">
+                        <p style="display: table-cell" style="color: black;font-weight: 900;font-variant: small-caps;">
+                            <%=user.city%> ,
+                                <%=user.state%>
+                        </p>
+                    </div>
+                </div>
+                <hr />
+                <p style="font-weight: bold" class="first">
+                    Type of Job required:
+                    <%=user.Jyl%>
+                </p>
+                <div class="row">
+                    <div class="col-8" style="  padding-left: 15px; ">
+                        <br/>
 
-          </div>
-        </div>
+                        <%if(user.EorS){%>
+                            Previous experience/Skills:
+                            <%=user.EorS%>
+                                <%}%>
+                                    <p style="text-align: justify;word-break: break-word;white-space: pre-line;">
+                                        <%=user.content%>
+                                    </p>
 
-
-
-        <br />
-
-
-        <p>
-          <a href="tel:<%=user.contact%>"> Call </a>/
-          <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
-        </p>
-        Posted On: <small><%=user.time%></small>
-        <br/>
-      </div>
-      <br>
-      <% }) %>
+                                    <br>
+                                    <%if(user.contact){%>
+                                        Contact :
+                                        <%=user.contact%>
+                                            <%}%><br>
+                                                <%if(user.email){%>
+                                                    Email :
+                                                    <a href="mailto:<%=user.email%>">
+                                                        <%=user.email%>
+                                                    </a>
+                                                    <%}%>
+                    </div>
+                    <div class="col-4">
+                        <p>
+                            <%if(user.age){%>
+                                Age:
+                                <%=user.age%>
+                                    <%}%>
 
 
 
-        </div>
-        </div>
-        <%- include('partials/footer') %>
+                                        <br />
+
+                        </p>
+
+                    </div>
+                </div>
+
+
+
+                <br />
+
+
+                <p>
+                    <a href="tel:<%=user.contact%>"> Call </a>/
+                    <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
+                </p>
+                Posted On: <small><%=user.time%></small>
+                <br/>
+            </div>
+            <!-- ----------------------------------CODE BY MANNAN------------------------------------->
+            <% for(var i=0; i < user.comments.length; i++) 
+            { %>
+
+
+                <% for(var j=0; j < commentData.length; j++) { %>
+                    <% if(String(commentData[j]._id)==String(user.comments[i])) 
+                        {%>
+                        <%
+                          
+                                var  dateString = String(commentData[j].time);
+                            
+                                dateString = dateString.substr(0,15)
+
+
+                        %>
+
+
+                            <div class="container">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-md-8">
+
+                                        <div class="card p-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="user d-flex flex-row align-items-center"> <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary"><%=commentData[j].name%></small> <small class="font-weight-bold"><%=commentData[j].content%></small></span>                                                    </div> <small><%=dateString%></small>
+                                            </div>
+                                            <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                <div class="reply px-4"> <small>Reply</small>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <%  
+                            break %>
+
+                                <%}
+                    
+                    
+                    
+                    %>
+
+                                    <%}%>
+
+
+                                        <% } %>
+
+
+                                            <div class="jumbotron comment">
+                                                <form method="post" action="">
+                                                    <input type="text" name="content" placeholder="write a comment..." required>
+
+                                                    <button type="submit" style="background-color: #006b96" class="btn btn-primary" name="comment" value="<%=user.name %>">Comment</button>
+
+
+                                                </form>
+                                            </div>
+
+
+
+
+
+                                            <% }) %>
+
+
+
+    </div>
+    </div>
+    <%- include('partials/footer') %>

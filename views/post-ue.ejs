@@ -1,83 +1,76 @@
 <%- include("partials/headerlogout") %>
 
-<div class="main">
-  <h1 class="heading" >Post to Seek Help related to Unemployment</h1>
+    <div class="main">
+        <h1 class="heading">Post to Seek Help related to Unemployment</h1>
 
-<% if(typeof postalert != 'undefined'){%>
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
- Please rectify the following details before posting
-     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        <% if(typeof postalert != 'undefined'){%>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                Please rectify the following details before posting
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
  <span aria-hidden="true"></span>
      </button>
-   </div>
-  <% postalert.forEach(function(posterror){%>
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-   <%=posterror.msg %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </div>
+            <% postalert.forEach(function(posterror){%>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <%=posterror.msg %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
 <span aria-hidden="true"></span>
     </button>
-  </div>
-  <%})%>
-  <% } %>
+                </div>
+                <%})%>
+                    <% } %>
 
 
 
-<form action="/post-ue" method="post">
-  <div class="form-group">
-    <label for="Sector">Sector<span style="color: red;">*</span></label>
-    &nbsp;
-    &nbsp;
-    <select required name="sector" id="result" >
-      <option value="IT">IT</option>
-      <option value="HR">HR</option>
-      <option value="Finance">Finance</option>
-      <option value="Management/Consulting">Management/Consulting</option>
-      <option value="Manufacturing">Manufacturing</option>
-      <option value="House/Office work">House/Office work</option>
-      <option value="Supply Chain">Supply Chain</option>
-      <option value="Small Business">Small businesses/Daily Labourers</option>
-      <option value="Other">Others</option>
-    </select>
-    <br />
-    <br />
-    <label>Name<span style="color: red;">*</span></label>
-    <input  required class="form-control" type="text" name="name" />
+                        <form action="/post-ue" method="post">
+                            <div class="form-group">
+                                <label for="Sector">Sector<span style="color: red;">*</span></label> &nbsp; &nbsp;
+                                <select required name="sector" id="result">
+                                        <option value="IT">IT</option>
+                                        <option value="HR">HR</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Management/Consulting">Management/Consulting</option>
+                                        <option value="Manufacturing">Manufacturing</option>
+                                        <option value="House/Office work">House/Office work</option>
+                                        <option value="Supply Chain">Supply Chain</option>
+                                        <option value="Small Business">Small businesses/Daily Labourers</option>
+                                        <option value="Other">Others</option>
+                                 </select>
+                                <br />
+                                <br />
+                                <label>Name<span style="color: red;">*</span></label>
+                                <input required class="form-control" type="text" name="name" />
 
 
 
-  
 
-    <label>State<span style="color: red;">*</span></label>
-    <select onchange="print_city('cityName', this.selectedIndex);" id="state" name ="state" class="form-control" required></select>
 
-    <label>City<span style="color: red;">*</span></label>
-    <select id ="cityName" class="form-control" required name="city"></select>
-    <script language="javascript">print_state("state");</script>
+                                <label>State<span style="color: red;">*</span></label>
+                                <select onchange="print_city('cityName', this.selectedIndex);" id="state" name="state" class="form-control" required></select>
 
-    <label>Previous experience/Skills</label>
-    <input class="form-control" type="text" name="EorS" />
-    
-    <label>Type of Job you are looking for:</label>
-    <input class="form-control" type="text" name="Jyl" />
+                                <label>City<span style="color: red;">*</span></label>
+                                <select id="cityName" class="form-control" required name="city"></select>
+                                <script language="javascript">
+                                    print_state("state");
+                                </script>
 
-    <label>Attendant Contact (10 digit)</label>
-    <input  class="form-control" type="text" name="contact" />
-    <label>Email:</label>
-    <input  class="form-control" type="email" name="email" />
-    <br>
-    <label>Explain your situation in few lines:</label>
-    <textarea  class="form-control" name="content" rows="5" cols="30"></textarea>
-  </div>
-  <button
-    type="submit"
-    style="background-color: #006b96"
-    class="btn btn-primary"
-    name="postbutton"
-  >
-    Publish
-  </button>
-</form>
-<br/><br/>
-</div>
+                                <label>Previous experience/Skills</label>
+                                <input class="form-control" type="text" name="EorS" />
 
-<%- include("partials/footer") %>
+                                <label>Type of Job you are looking for:</label>
+                                <input class="form-control" type="text" name="Jyl" />
+
+                                <label>Attendant Contact (10 digit)</label>
+                                <input class="form-control" type="text" name="contact" />
+                                <label>Email:</label>
+                                <input class="form-control" type="email" name="email" />
+                                <br>
+                                <label>Explain your situation in few lines:</label>
+                                <textarea class="form-control" name="content" rows="5" cols="30"></textarea>
+                            </div>
+                            <button type="submit" style="background-color: #006b96" class="btn btn-primary" name="postbutton">Publish</button>
+                        </form>
+                        <br/><br/>
+    </div>
+
+    <%- include("partials/footer") %>
