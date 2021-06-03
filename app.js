@@ -65,6 +65,40 @@ mongoose.connect("mongodb://localhost:27017/MyDb", {
   useUnifiedTopology: true,
 });
 mongoose.set("useCreateIndex", true);
+mongoose.set('useFindAndModify', false);
+
+
+const clickData = new mongoose.Schema({
+  user: String,
+  //filters
+  "Beds without oxygen" : Number,
+  "Beds with oxygen": Number,
+  "Medicine Type": Number,
+  "Oxygen Concentrator" : Number,
+  "Plasma" : Number,
+  "Financial Help": Number,
+  "Other": Number,
+
+  //nav bar links
+  "naturalDisaster" : Number,
+  "covid19" : Number,
+  "unemployment" : Number,
+
+  //contact button clicks
+  "covidContact": Number,
+  "Beds without oxygen Contact" : Number,
+  "Beds with oxygen Contact": Number,
+  "Medicine Type Contact": Number,
+  "Oxygen Concentrator Contact" : Number,
+  "Plasma Contact" : Number,
+  "Financial Help Contact": Number,
+  "Other Contact": Number,
+  "ndcContact" : Number,
+  "employmentContact" : Number
+});
+const ClickData = mongoose.model("ClickData", clickData);
+
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -386,6 +420,14 @@ app.post("/login", function (req, res) {
       usernameafterlogin = req.body.username;
       passport.authenticate("local")(req, res, function () {
       if(validuser){
+        ClickData.find({user: req.user.username}, (err, data) => {
+          if (data.length === 0) {
+            let newClickData = new ClickData({user: req.user.username,   "Beds without oxygen" : 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator" : 0, "Plasma" : 0, "Financial Help": 0, "Other": 0, "naturalDisaster" : 0, "covid19" : 0, "unemployment" : 0, "covidContact": 0,"Beds without oxygen Contact" : 0,"Beds with oxygen Contact": 0,"Medicine Type Contact": 0,"Oxygen Concentrator Contact" : 0,"Plasma Contact" : 0,"Financial Help Contact": 0,"Other Contact": 0,"ndcContact" : 0,"employmentContact" : 0});
+            newClickData.save((err)=> {
+              if(err) console.log(err);
+            });
+          }
+        });
         res.redirect("/about");
       }
       else{
@@ -435,15 +477,7 @@ app.get(
 
 
 
-
-
-
-
-
-
-
 app.post("/filterposts", function (req, res) {
-
   global.cityfilter = req.body.cityfilter;
   global.statefilter = req.body.statefilter;
   global.requirementfilter = req.body.requirementfilter;
@@ -451,10 +485,20 @@ app.post("/filterposts", function (req, res) {
   requirementname = requirementfilter;
   cityname = cityfilter;
   statename = statefilter;
+  if (req.isAuthenticated()) {
+    ClickData.find({user: req.user.username}, (err, data) => {
+      if (data.length === 0) {
+        let newClickData = new ClickData({user: req.user.username,   "Beds without oxygen" : 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator" : 0, "Plasma" : 0, "Financial Help": 0, "Other": 0, "naturalDisaster" : 0, "covid19" : 0, "unemployment" : 0, "covidContact": 0,"Beds without oxygen Contact" : 0,"Beds with oxygen Contact": 0,"Medicine Type Contact": 0,"Oxygen Concentrator Contact" : 0,"Plasma Contact" : 0,"Financial Help Contact": 0,"Other Contact": 0,"ndcContact" : 0,"employmentContact" : 0});
+        newClickData.save((err)=> {
+          if(err) console.log(err);
+        });
+      }
+    });
+    ClickData.findOneAndUpdate({user: req.user.username}, {$inc: {[requirementfilter]: 1}}, (err) => {
+      if (err) console.log(err);
+    });
+  }
   res.redirect("/filterposts");
-
-
-
 });
 
 const posthelpSchema = {
@@ -806,6 +850,17 @@ app.get("/filterpostslogout", function (req, res) {
 
 app.get("/feed", function (req, res) {
   if (req.isAuthenticated()) {
+    ClickData.find({user: req.user.username}, (err, data) => {
+      if (data.length === 0) {
+        let newClickData = new ClickData({user: req.user.username,   "Beds without oxygen" : 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator" : 0, "Plasma" : 0, "Financial Help": 0, "Other": 0, "naturalDisaster" : 0, "covid19" : 0, "unemployment" : 0, "covidContact": 0,"Beds without oxygen Contact" : 0,"Beds with oxygen Contact": 0,"Medicine Type Contact": 0,"Oxygen Concentrator Contact" : 0,"Plasma Contact" : 0,"Financial Help Contact": 0,"Other Contact": 0,"ndcContact" : 0,"employmentContact" : 0});
+        newClickData.save((err)=> {
+          if(err) console.log(err);
+        });
+      }
+    });
+    ClickData.findOneAndUpdate({user: req.user.username}, {$inc : {"covid19" : 1}}, (err) => {
+      if (err) console.log(err);
+    });
     PostHelp.find({}, function (err, foundPosthelp) {
       res.render("feedlogout", {
         posthelps: foundPosthelp
@@ -818,6 +873,17 @@ app.get("/feed", function (req, res) {
 
 app.get("/feed-ue", function (req, res) {
   if (req.isAuthenticated()) {
+    ClickData.find({user: req.user.username}, (err, data) => {
+      if (data.length === 0) {
+        let newClickData = new ClickData({user: req.user.username,   "Beds without oxygen" : 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator" : 0, "Plasma" : 0, "Financial Help": 0, "Other": 0, "naturalDisaster" : 0, "covid19" : 0, "unemployment" : 0, "covidContact": 0,"Beds without oxygen Contact" : 0,"Beds with oxygen Contact": 0,"Medicine Type Contact": 0,"Oxygen Concentrator Contact" : 0,"Plasma Contact" : 0,"Financial Help Contact": 0,"Other Contact": 0,"ndcContact" : 0,"employmentContact" : 0});
+        newClickData.save((err)=> {
+          if(err) console.log(err);
+        });
+      }
+    });
+    ClickData.findOneAndUpdate({user: req.user.username}, {$inc : {"unemployment" : 1}}, (err) => {
+      if (err) console.log(err);
+    });
     PostHelpue.find({}, function (err, foundPosthelpue) {
       res.render("feedlogout-ue", {
         posthelpues: foundPosthelpue
@@ -829,6 +895,17 @@ app.get("/feed-ue", function (req, res) {
 });
 app.get("/feed-ndc", function (req, res) {
   if (req.isAuthenticated()) {
+    ClickData.find({user: req.user.username}, (err, data) => {
+      if (data.length === 0) {
+        let newClickData = new ClickData({user: req.user.username,   "Beds without oxygen" : 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator" : 0, "Plasma" : 0, "Financial Help": 0, "Other": 0, "naturalDisaster" : 0, "covid19" : 0, "unemployment" : 0, "covidContact": 0,"Beds without oxygen Contact" : 0,"Beds with oxygen Contact": 0,"Medicine Type Contact": 0,"Oxygen Concentrator Contact" : 0,"Plasma Contact" : 0,"Financial Help Contact": 0,"Other Contact": 0,"ndcContact" : 0,"employmentContact" : 0});
+        newClickData.save((err)=> {
+          if(err) console.log(err);
+        });
+      }
+    });
+    ClickData.findOneAndUpdate({user: req.user.username}, {$inc : {"naturalDisaster" : 1}}, (err) => {
+      if (err) console.log(err);
+    });
     PostHelpndc.find({}, function (err, foundPosthelpndc) {
       res.render("feedlogout-ndc", {
         posthelpndcs: foundPosthelpndc
@@ -840,6 +917,17 @@ app.get("/feed-ndc", function (req, res) {
 });
 app.get("/feedlogout", function (req, res) {
   if (req.isAuthenticated()) {
+    ClickData.find({user: req.user.username}, (err, data) => {
+      if (data.length === 0) {
+        let newClickData = new ClickData({user: req.user.username,   "Beds without oxygen" : 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator" : 0, "Plasma" : 0, "Financial Help": 0, "Other": 0, "naturalDisaster" : 0, "covid19" : 0, "unemployment" : 0, "covidContact": 0,"Beds without oxygen Contact" : 0,"Beds with oxygen Contact": 0,"Medicine Type Contact": 0,"Oxygen Concentrator Contact" : 0,"Plasma Contact" : 0,"Financial Help Contact": 0,"Other Contact": 0,"ndcContact" : 0,"employmentContact" : 0});
+        newClickData.save((err)=> {
+          if(err) console.log(err);
+        });
+      }
+    });
+    ClickData.findOneAndUpdate({user: req.user.username}, {$inc : {"covid19" : 1}}, (err) => {
+      if (err) console.log(err);
+    });
     PostHelp.find({}, function (err, foundPosthelp) {
       res.render("feed", {
         posthelps: foundPosthelp
@@ -851,6 +939,17 @@ app.get("/feedlogout", function (req, res) {
 });
 app.get("/feedlogout-ue", function (req, res) {
   if (req.isAuthenticated()) {
+    ClickData.find({user: req.user.username}, (err, data) => {
+      if (data.length === 0) {
+        let newClickData = new ClickData({user: req.user.username,   "Beds without oxygen" : 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator" : 0, "Plasma" : 0, "Financial Help": 0, "Other": 0, "naturalDisaster" : 0, "covid19" : 0, "unemployment" : 0, "covidContact": 0,"Beds without oxygen Contact" : 0,"Beds with oxygen Contact": 0,"Medicine Type Contact": 0,"Oxygen Concentrator Contact" : 0,"Plasma Contact" : 0,"Financial Help Contact": 0,"Other Contact": 0,"ndcContact" : 0,"employmentContact" : 0});
+        newClickData.save((err)=> {
+          if(err) console.log(err);
+        });
+      }
+    });
+    ClickData.findOneAndUpdate({user: req.user.username}, {$inc : {"unemployment" : 1}}, (err) => {
+      if (err) console.log(err);
+    });
     PostHelpue.find({}, function (err, foundPosthelpue) {
       res.render("feed-ue", {
         posthelpues: foundPosthelpue
@@ -862,6 +961,17 @@ app.get("/feedlogout-ue", function (req, res) {
 });
 app.get("/feedlogout-ndc", function (req, res) {
   if (req.isAuthenticated()) {
+    ClickData.find({user: req.user.username}, (err, data) => {
+      if (data.length === 0) {
+        let newClickData = new ClickData({user: req.user.username,   "Beds without oxygen" : 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator" : 0, "Plasma" : 0, "Financial Help": 0, "Other": 0, "naturalDisaster" : 0, "covid19" : 0, "unemployment" : 0, "covidContact": 0,"Beds without oxygen Contact" : 0,"Beds with oxygen Contact": 0,"Medicine Type Contact": 0,"Oxygen Concentrator Contact" : 0,"Plasma Contact" : 0,"Financial Help Contact": 0,"Other Contact": 0,"ndcContact" : 0,"employmentContact" : 0});
+        newClickData.save((err)=> {
+          if(err) console.log(err);
+        });
+      }
+    });
+    ClickData.findOneAndUpdate({user: req.user.username}, {$inc : {"naturalDisaster" : 1}}, (err) => {
+      if (err) console.log(err);
+    });
     PostHelpndc.find({}, function (err, foundPosthelpndc) {
       res.render("feed-ndc", {
         posthelpndcs: foundPosthelpndc
@@ -1063,6 +1173,21 @@ app.get('/displayprofile', (req, res) => {
   }
 });
 
+
+app.post("/click", (req,res) => {
+  if (req.isAuthenticated()) {
+    if (req.body.link == "covidContact") {
+      ClickData.findOneAndUpdate({user: req.user.username}, {$inc : {[req.body.subcat]: 1, [req.body.link]: 1}}, (err) => {
+        if (err) console.log(err);
+      });
+    }
+    else {
+      ClickData.findOneAndUpdate({user: req.user.username}, {$inc: {[req.body.link]: 1}}, (err) => {
+        if (err) console.log(err);
+      })
+    }
+  }
+});
 
 
 

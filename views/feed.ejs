@@ -122,9 +122,14 @@
             </p>
            <div class="wrapper">
               <details data-popover="right">
-                <summary>
+                <summary id = "clicker-covid">
                   Click here to Contact
                 </summary>
+                <script>
+                  document.getElementById("clicker-covid").onclick = () => {
+                    $.post("click", {subcat: "<%- user.requirement %> Contact",link: "covidContact"});
+                  }
+                </script>
                 <div>
                   <p>
                     Contact : <%=user.contact%>
