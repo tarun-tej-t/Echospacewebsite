@@ -772,9 +772,9 @@ app.post("/feed-ue", bodyParser.urlencoded({ extended: false }), function(req, r
 
 
 
-            PostHelpue.updateOne({ "name": req.body.comment }, { $push: { "comments": comment.id } }).then((obj) => {
+            PostHelpue.updateOne({ "_id": req.body.comment }, { $push: { "comments": comment.id } }).then((obj) => {
 
-                    // console.log(obj);
+                    console.log(obj);
                 })
                 .catch((err) => {
                     console.log(err)
@@ -805,7 +805,7 @@ app.post("/feed", bodyParser.urlencoded({ extended: false }), function(req, res)
 
 
 
-            PostHelp.updateOne({ "name": req.body.comment }, { $push: { "comments": comment.id } }).then((obj) => {
+            PostHelp.updateOne({ "_id": req.body.comment }, { $push: { "comments": comment.id } }).then((obj) => {
 
                     // console.log(obj);
                 })
@@ -836,7 +836,7 @@ app.post("/services", bodyParser.urlencoded({ extended: false }), function(req, 
 
 
 
-            PostSer.updateOne({ "pname": req.body.comment }, { $push: { "comments": comment.id } }).then((obj) => {
+            PostSer.updateOne({ "_id": req.body.comment }, { $push: { "comments": comment.id } }).then((obj) => {
 
                     // console.log(obj);
                 })
