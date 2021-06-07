@@ -5,6 +5,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const { ObjectID } = require('mongodb');
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -652,11 +653,30 @@ app.get("/feedlogout", function(req, res) {
     });
 });
 app.get("/feedlogout-ue", function(req, res) {
-    PostHelpue.find({}, function(err, foundPosthelpue) {
-        res.render("feedlogout-ue", {
-            posthelpues: foundPosthelpue
+    // ------------------------------------- EDIT BY MANNAN---------------------------------//
+    if (req.isAuthenticated()) {
+        PostHelpue.find({}, function(err, foundPosthelpue) {
+
+            comments.find({}, function(err, foundComment) {
+                res.render("feedlogout-ue", {
+                    posthelpues: foundPosthelpue,
+                    commentData: foundComment
+
+                });
+            })
         });
-    });
+    } else {
+        PostHelpue.find({}, function(err, foundPosthelpue) {
+
+            comments.find({}, function(err, foundComment) {
+                res.render("feed-ue", {
+                    posthelpues: foundPosthelpue,
+                    commentData: foundComment
+
+                });
+            })
+        });
+    }
 });
 
 app.get("/feedlogout-ndc", function(req, res) {
@@ -747,7 +767,8 @@ const commentSchema = {
     },
 
     content: String,
-    time: Date
+    time: Date,
+    replies: []
 
 };
 const comments = mongoose.model("comments", commentSchema);
@@ -759,95 +780,173 @@ const comments = mongoose.model("comments", commentSchema);
 app.post("/feed-ue", bodyParser.urlencoded({ extended: false }), function(req, res) {
 
 
-    const comment = new comments({
-        name: req.body.name,
+    var reis = req.body.comment.split(",");
+    console.log(reis)
+    if (reis[1] == 0) {
+        comments.updateOne({ "_id": ObjectID(reis[0]) }, {
+                $push: {
+                    "replies": {
+                        "name": "Annonymous",
+                        "content": req.body.content,
+                        "date": new Date()
 
-        content: req.body.content,
+                    }
+                }
+            }).then((obj) => {
 
-        time: new Date()
-    });
+                console.log(obj);
+            })
+            .catch((err) => {
+                console.log(err)
 
-    comment.save(function(err) {
-        if (!err) {
+            })
+        console.log(reis[0])
+        res.redirect("/feed-ue");
+
+    } else {
+        const comment = new comments({
+            name: req.body.name,
+
+            content: req.body.content,
+
+            time: new Date()
+        });
+
+
+        comment.save(function(err) {
+            if (!err) {
 
 
 
-            PostHelpue.updateOne({ "_id": req.body.comment }, { $push: { "comments": comment.id } }).then((obj) => {
+                PostHelpue.updateOne({ "_id": ObjectID(reis[0]) }, { $push: { "comments": comment.id } }).then((obj) => {
 
-                    console.log(obj);
-                })
-                .catch((err) => {
-                    console.log(err)
+                        console.log(obj);
+                    })
+                    .catch((err) => {
+                        console.log(err)
 
-                })
+                    })
 
-            res.redirect("/feed-ue");
-        }
-    });
+                res.redirect("/feed-ue");
+            }
+        });
+    }
 
 });
 
 
 
 app.post("/feed", bodyParser.urlencoded({ extended: false }), function(req, res) {
+    var reis = req.body.comment.split(",");
+    console.log(reis)
+    if (reis[1] == 0) {
+        comments.updateOne({ "_id": ObjectID(reis[0]) }, {
+                $push: {
+                    "replies": {
+                        "name": "Annonymous",
+                        "content": req.body.content,
+                        "date": new Date()
+
+                    }
+                }
+            }).then((obj) => {
+
+                console.log(obj);
+            })
+            .catch((err) => {
+                console.log(err)
+
+            })
+        console.log(reis[0])
+        res.redirect("/feed");
+
+    } else {
+
+        const comment = new comments({
+            name: req.body.name,
+
+            content: req.body.content,
+
+            time: new Date()
+        });
+
+        comment.save(function(err) {
+            if (!err) {
 
 
-    const comment = new comments({
-        name: req.body.name,
 
-        content: req.body.content,
+                PostHelp.updateOne({ "_id": ObjectID(reis[0]) }, { $push: { "comments": comment.id } }).then((obj) => {
 
-        time: new Date()
-    });
+                        // console.log(obj);
+                    })
+                    .catch((err) => {
+                        console.log(err)
 
-    comment.save(function(err) {
-        if (!err) {
+                    })
 
-
-
-            PostHelp.updateOne({ "_id": req.body.comment }, { $push: { "comments": comment.id } }).then((obj) => {
-
-                    // console.log(obj);
-                })
-                .catch((err) => {
-                    console.log(err)
-
-                })
-
-            res.redirect("/feed");
-        }
-    });
+                res.redirect("/feed");
+            }
+        });
+    }
 
 });
 
 app.post("/services", bodyParser.urlencoded({ extended: false }), function(req, res) {
 
 
-    const comment = new comments({
-        name: req.body.name,
+    var reis = req.body.comment.split(",");
+    console.log(reis)
+    if (reis[1] == 0) {
+        comments.updateOne({ "_id": ObjectID(reis[0]) }, {
+                $push: {
+                    "replies": {
+                        "name": "Annonymous",
+                        "content": req.body.content,
+                        "date": new Date()
 
-        content: req.body.content,
+                    }
+                }
+            }).then((obj) => {
 
-        time: new Date()
-    });
+                console.log(obj);
+            })
+            .catch((err) => {
+                console.log(err)
 
-    comment.save(function(err) {
-        if (!err) {
+            })
+        console.log(reis[0])
+        res.redirect("/services");
+
+    } else {
+        const comment = new comments({
+            name: req.body.name,
+
+            content: req.body.content,
+
+            time: new Date()
+        });
+
+
+        comment.save(function(err) {
+            if (!err) {
 
 
 
-            PostSer.updateOne({ "_id": req.body.comment }, { $push: { "comments": comment.id } }).then((obj) => {
+                PostSer.updateOne({ "_id": ObjectID(reis[0]) }, { $push: { "comments": comment.id } }).then((obj) => {
 
-                    // console.log(obj);
-                })
-                .catch((err) => {
-                    console.log(err)
+                        console.log(obj);
+                    })
+                    .catch((err) => {
+                        console.log(err)
 
-                })
+                    })
 
-            res.redirect("/services");
-        }
-    });
+                res.redirect("/services");
+            }
+        });
+    }
+
+
 
 });
 //--------------------------------------------------------------------------------------

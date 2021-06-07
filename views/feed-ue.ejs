@@ -14,15 +14,12 @@
     </style> -->
     <style>
         .comment {
+            width: 100%;
             margin-top: 50px;
             background-color: white;
             display: flex;
-            justify-self: center;
-        }
-        
-        .comment input {
-            width: 300px;
-            height: 100px;
+            justify-content: center;
+            border: 2px solid black;
         }
         
         .card {
@@ -37,19 +34,58 @@
         }
         
         .reply small {
-            color: #b7b4b4
+            color user-select: none;
         }
         
         .reply small:hover {
             color: green;
             cursor: pointer
         }
+        
+        .divide {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .show-comments {
+            text-decoration: underline;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .show-comments:hover {
+            color: green;
+        }
+        
+        .comment-section {
+            flex-direction: column;
+        }
+        
+        .textarea {
+            resize: none;
+            margin-bottom: 10px;
+        }
+        
+        .cursor:hover {
+            color: blue
+        }
+        
+        .cursor {
+            cursor: pointer
+        }
+        
+        .reply-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: left;
+        }
     </style>
 
     <div class="fpbg">
 
         <br>
-        <% posthelpues.reverse().forEach(function(user){ %>
+        <% posthelpues.reverse().forEach(function(user,index){ %>
             <div style="padding: 2%" class="jumbotron">
                 <div class="row">
                     <div class="col-8">
@@ -118,18 +154,26 @@
                     <a href="tel:<%=user.contact%>"> Call </a>/
                     <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
                 </p>
-                Posted On: <small><%=user.time%></small>
-                <br/>
+                <div class="divide">
+                    <div>
+                        Posted On: <small><%=user.time%></small>
+                    </div>
+                    <div class="show-comments">
+                        <%=user.comments.length%> comments</div>
+                </div>
+
             </div>
+
             <!-- ----------------------------------CODE BY MANNAN------------------------------------->
-            <% for(var i=0; i < user.comments.length; i++) 
-            { %>
+            <div class="comment-section">
+                <% for(var i=0; i < user.comments.length; i++) 
+              { %>
 
 
-                <% for(var j=0; j < commentData.length; j++) { %>
-                    <% if(String(commentData[j]._id)==String(user.comments[i])) 
+                    <% for(var j=0; j < commentData.length; j++) { %>
+                        <% if(String(commentData[j]._id)==String(user.comments[i])) 
                         {%>
-                        <%
+                            <%
                           
                                 var  dateString = String(commentData[j].time);
                             
@@ -139,13 +183,15 @@
                         %>
 
 
-                            <div class="container">
-                                <div class="row d-flex justify-content-center">
-                                    <div class="col-md-8">
+                                <div class="container">
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-md-8">
 
-                                        <div class="card p-3">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="user d-flex flex-row align-items-center"> <span><small class="font-weight-bold text-primary"><%=commentData[j].name%></small> <small class="font-weight-bold"><%=commentData[j].content%></small></span> </div> <small><%=dateString%></small>
+                                            <div class="card p-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="user d-flex flex-row align-items-center"> <span><small class="font-weight-bold text-primary"><%=commentData[j].name%></small><div> <small class="font-weight-bold"><%=commentData[j].content%></small></span>
+                                                    </div>
+                                                </div> <small><%=dateString%></small>
                                             </div>
                                             <div class="action d-flex justify-content-between mt-2 align-items-center">
                                                 <div class="reply px-4"> <small>Reply</small>
@@ -157,40 +203,152 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <%  
+
+
+                                <div class="bg-light p-2 w-50  jumbotron">
+                                    <div class="reply-section">
+
+                                        <% for(var w=0; w< commentData[j].replies.length; w++)
+                                         {%>
+                                            <%
+                          
+                                                 var  dateString = String(commentData[j].replies[w].date);
+                      
+                                                   dateString = dateString.substr(0,15)
+                                        
+
+                                                %>
+
+                                                <div class=" mb-2">
+
+                                                    <div class="card p-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="user d-flex flex-row align-items-center"> <span><small class="font-weight-bold text-primary"><%=commentData[j].replies[w].name%></small> <small 
+                                                                    class="font-weight-bold">
+                                                                    <div class= "pr-3"><%=commentData[j].replies[w].content%></small></span> </div>
+                                                        </div>
+                                                        <small><%=dateString%></small>
+                                                    </div>
+
+
+
+
+                                                </div>
+                                    </div>
+
+
+
+
+
+
+
+                                    <%} %>
+
+
+                                        <form method="post" action="">
+                                            <div class="d-flex flex-row  justify-content-around">
+                                                <div class="w-75">
+
+                                                    <input type="text" class="form-control mx-1 shadow-none textarea" name="content" placeholder="write reply..." required>
+                                                </div>
+                                                <% var ele=[commentData[j]._id, 0]%>
+
+
+                                                    <div class="mt-1 ml-2 text-right">
+                                                        <button type="submit" class="btn btn-primary btn-sm shadow-none" name="comment" value="<%=ele %>"><i class="fa fa-reply p-1 mr-2" aria-hidden="true"></i></button>
+                                                    </div>
+
+                                            </div>
+                                        </form>
+                                </div>
+            </div>
+    </div>
+    <%  
                             break %>
 
-                                <%}
+        <%}
                     
                     
                     
-                    %>
+                     %>
 
-                                    <%}%>
-
-
-                                        <% } %>
+            <%}%>
 
 
-                                            <div class="jumbotron comment">
-                                                <form method="post" action="">
-                                                    <input type="text" name="content" placeholder="write a comment..." required>
+                <% } %>
 
-                                                    <button type="submit" style="background-color: #006b96" class="btn btn-primary" name="comment" value="<%=user._id %>">Comment</button>
+                    </div>
+
+                    <div class="jumbotron p-2 bg-light w-50">
+
+                        <form method="post" action="">
+                            <div class="container">
+                                <div class="d-flex justify-content-around ">
+                                    <div class="w-100">
+
+                                        <input type="text " class="form-control mt-1 shadow-none textarea " name="content " placeholder="write a comment... " required>
+                                    </div>
+
+                                    <% var ele=[user._id, 1]%>
 
 
-                                                </form>
-                                            </div>
+                                        <div class="mt-2 ml-2 text-right">
+                                            <button type="submit " class="btn btn-primary btn-sm shadow-none " name="comment " value="<%=ele %>"><i class="fa fa-comments p-1" aria-hidden="true"></i></button>
+                                        </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
 
 
 
 
 
-                                            <% }) %>
+
+                    <% }) %>
 
 
 
-    </div>
-    </div>
-    <%- include('partials/footer') %>
+                        </div>
+                        </div>
+
+                        <script>
+                            var show_comments = document.querySelectorAll(".show-comments")
+                            var comment_section = document.querySelectorAll(".comment-section");
+                            var reply_button = document.querySelectorAll(".reply");
+                            var replies_section = document.querySelectorAll(".reply-section");
+
+                            replies_section.forEach((x) => {
+                                x.style.display = 'none';
+                            })
+
+
+                            console.log(replies_section);
+                            comment_section.forEach((x) => {
+                                x.style.display = 'none';
+                            })
+                            reply_button.forEach((x, index) => {
+                                x.addEventListener('click', function() {
+                                    if (replies_section[index].style.display == "none")
+
+                                        replies_section[index].style.display = "flex";
+                                    else
+                                        replies_section[index].style.display = "none";
+
+
+                                });
+                            });
+                            show_comments.forEach((x, index) => {
+                                x.addEventListener('click', function() {
+                                    if (comment_section[index].style.display == "none")
+
+                                        comment_section[index].style.display = "flex";
+                                    else
+                                        comment_section[index].style.display = "none";
+
+
+                                });
+                            });
+                        </script>
+                        <%- include('partials/footer') %>

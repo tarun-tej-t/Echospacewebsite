@@ -1,0 +1,49 @@
+<% postsers.reverse().forEach(function(post){ %>
+
+    <div style="padding: 2%" class="jumbotron">
+        <div class="row">
+            <div class="col-8">
+                <h2 style="word-break: break-word;font-size: 35px; display: table-cell; vertical-align: middle" class="display-4">
+                    <%=post.pname%>
+                </h2>
+            </div>
+            <div class="col-4">
+                <p style="display: table-cell">
+                    <%=post.city%> ,
+                        <%=post.state%>
+                </p>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <p style="font-weight: bold; " class="firs">
+                Type of Organization :
+                <%=post.type%> | Service Offered :
+                    <%=post.help%>
+            </p>
+        </div>
+        <div class="row">
+            <div style="  padding-left: 15px; padding-right: 15px; padding-top: 10px;white-space: pre-line;">
+                <p style="text-align: justify;">
+                    <%=post.detail%>
+                </p>
+                <br><br> Contact :
+                <%=post.phone%>
+            </div>
+
+        </div>
+
+
+
+        <br><br>
+
+
+        <p>
+            <a href="tel:<%=post.phone%>"> Call </a>/
+            <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=post.phone%>">Whatsapp</a>
+        </p>
+        </p> Posted On: <small>
+                  <%=post.time%>
+                 </small>
+        <br />
+    </div>
