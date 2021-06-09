@@ -120,11 +120,7 @@
                               <summary id="clicker-unemployed">
                                 Click here to Contact
                               </summary>
-                              <script>
-                                document.getElementById("clicker-unemployed").onclick = () => {
-                                  $.post("click", {link: "employmentContact"});
-                                }
-                              </script>
+                              
                               <div>
                                 <p>
                                   <%if(user.contact){%>
@@ -141,6 +137,11 @@
                           <%}%>
                               </div>
                             </details>
+                            <script>
+                              document.getElementById("clicker-unemployed").onclick = () => {
+                                $.post("click", {link: "employmentContact"});
+                              }
+                            </script>
                           </div>
           </div>
 
@@ -164,5 +165,10 @@
 
 
   </div>
+  </div>  <div>
+    <div style="padding: 2%" class="jumbotron">
+      <h1 style="text-align: center;">No posts Available</h1>
+    </div>
+
   </div>
   <%- include('partials/footer') %>

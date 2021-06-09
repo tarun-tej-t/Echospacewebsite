@@ -125,11 +125,7 @@
                 <summary id = "clicker-covid">
                   Click here to Contact
                 </summary>
-                <script>
-                  document.getElementById("clicker-covid").onclick = () => {
-                    $.post("click", {subcat: "<%- user.requirement %> Contact",link: "covidContact"});
-                  }
-                </script>
+             
                 <div>
                   <p>
                     Contact : <%=user.contact%>
@@ -138,6 +134,11 @@
                   <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
                 </div>
               </details>
+              <script>
+                document.getElementById("clicker-covid").onclick = () => {
+                  $.post("click", {subcat: "<%- user.requirement %> Contact",link: "covidContact"});
+                }
+              </script>
             </div>
           </div>
           <div class="col-4">
@@ -160,5 +161,10 @@
 
 
         </div>
+        </div>  <div>
+          <div style="padding: 2%" class="jumbotron">
+            <h1 style="text-align: center;">No posts Available</h1>
+          </div>
+    
         </div>
         <%- include('partials/footer') %>

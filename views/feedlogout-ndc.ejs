@@ -116,11 +116,7 @@
                 <summary id="clicker-ndc">
                   Click here to Contact
                 </summary>
-                <script>
-                  document.getElementById("clicker-ndc").onclick = () => {
-                    $.post("click", {link: "ndcContact"});
-                  }
-                </script>
+               
                 <div>
                   <p>
                     Contact : <%=user.contact%>
@@ -129,6 +125,11 @@
                   <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=user.contact%>">Whatsapp</a>
                 </div>
               </details>
+              <script>
+                document.getElementById("clicker-ndc").onclick = () => {
+                  $.post("click", {link: "ndcContact"});
+                }
+              </script>
             </div>
           </div>
          
@@ -149,5 +150,10 @@
 
 
         </div>
+        </div>  <div>
+          <div style="padding: 2%" class="jumbotron">
+            <h1 style="text-align: center;">No posts Available</h1>
+          </div>
+    
         </div>
         <%- include('partials/footer') %>

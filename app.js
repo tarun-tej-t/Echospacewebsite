@@ -65,6 +65,7 @@ mongoose.connect("mongodb://localhost:27017/MyDb", {
   useUnifiedTopology: true,
 });
 mongoose.set("useCreateIndex", true);
+
 mongoose.set('useFindAndModify', false);
 
 
@@ -97,6 +98,7 @@ const clickData = new mongoose.Schema({
   "employmentContact" : Number
 });
 const ClickData = mongoose.model("ClickData", clickData);
+
 
 
 const userSchema = new mongoose.Schema({
@@ -167,7 +169,7 @@ const sendMail = (username, uniqueString) => {
     from: 'verification@echospace.in',
     to: username,
     subject: 'Email verification ',
-    html: `Press <a href=http://localhost:3000/verify/${uniqueString}>here</a> to verify your email.`
+    html: `Press <a href=http://http://localhost:3000/verify/${uniqueString}>here</a> to verify your email.`
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -196,7 +198,7 @@ const sendMailreset = (username, uniqueString) => {
     from: 'verification@echospace.in',
     to: username,
     subject: 'To reset your Password',
-    html: `Press <a href=http://localhost:3000/reset/${username}>here</a> to reset your password.`
+    html: `Press <a href=http://http://localhost:3000/reset/${username}>here</a> to reset your password.`
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -419,7 +421,7 @@ app.post("/login", function (req, res) {
     } else {
       usernameafterlogin = req.body.username;
       passport.authenticate("local")(req, res, function () {
-      if(validuser){
+    
         ClickData.find({user: req.user.username}, (err, data) => {
           if (data.length === 0) {
             let newClickData = new ClickData({user: req.user.username,   "Beds without oxygen" : 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator" : 0, "Plasma" : 0, "Financial Help": 0, "Other": 0, "naturalDisaster" : 0, "covid19" : 0, "unemployment" : 0, "covidContact": 0,"Beds without oxygen Contact" : 0,"Beds with oxygen Contact": 0,"Medicine Type Contact": 0,"Oxygen Concentrator Contact" : 0,"Plasma Contact" : 0,"Financial Help Contact": 0,"Other Contact": 0,"ndcContact" : 0,"employmentContact" : 0});
@@ -428,11 +430,12 @@ app.post("/login", function (req, res) {
             });
           }
         });
+
         res.redirect("/about");
-      }
-      else{
-        res.write("<h1>Please verify your email before you login</h1>")
-      }
+      // }
+      // else{
+      //   res.write("<h1>Please verify your email before you login</h1>")
+      // }
       });
     }
   });
@@ -939,6 +942,7 @@ app.get("/feedlogout", function (req, res) {
 });
 app.get("/feedlogout-ue", function (req, res) {
   if (req.isAuthenticated()) {
+
     ClickData.find({user: req.user.username}, (err, data) => {
       if (data.length === 0) {
         let newClickData = new ClickData({user: req.user.username,   "Beds without oxygen" : 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator" : 0, "Plasma" : 0, "Financial Help": 0, "Other": 0, "naturalDisaster" : 0, "covid19" : 0, "unemployment" : 0, "covidContact": 0,"Beds without oxygen Contact" : 0,"Beds with oxygen Contact": 0,"Medicine Type Contact": 0,"Oxygen Concentrator Contact" : 0,"Plasma Contact" : 0,"Financial Help Contact": 0,"Other Contact": 0,"ndcContact" : 0,"employmentContact" : 0});
@@ -954,8 +958,9 @@ app.get("/feedlogout-ue", function (req, res) {
       res.render("feed-ue", {
         posthelpues: foundPosthelpue
       });
+
     });
-  } else {
+} else {
     res.redirect("/login");
   }
 });
@@ -1055,7 +1060,12 @@ const profileSchema = new mongoose.Schema({
   fname: String,
   lname: String,
   city: String,
+  state:String,
   phone: String,
+  facebook: String,
+  linkedin: String,
+  instagram: String,
+  twitter: String,
   description: String
 });
 
@@ -1136,7 +1146,7 @@ app.post('/profiledit/profiledata', (req, res) => {
   if (req.isAuthenticated()) {
     let userdb = req.user;
     UserProfile.update({ user: userdb.username },
-      { $set: { city: req.body.city, phone: req.body.phone, description: req.body.description } }, { multi: false }, (err) => {
+      { $set: {fname:req.body.fname,lname:req.body.lname,state:req.body.state,city: req.body.city, phone: req.body.phone, facebook: req.body.facebook, linkedin: req.body.linkedin, twitter: req.body.twitter, instagram: req.body.instagram, description: req.body.description } }, { multi: false }, (err) => {
         if (err) {
           console.log(err);
           res.status(500).send('An error occurred', err);

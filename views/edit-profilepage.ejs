@@ -1,30 +1,111 @@
 <%- include("partials/headerlogout") %>
-<div>
-  <div class="container-fluid">
-    <h2 class="text-center">Edit your profile</h2>
-    <br />
-    <div class="container border" style="background-color: #F3F3F3; height: 95vh;">
-      <form action="/profiledit/profiledata" method="POST">
-        <div class="form-group text-center">
-          <h4>Tell Something about yourself: </h4> 
-          <textarea  class="form-control" name="description" rows="5" cols="30" style="margin-bottom: 10px"><%- data[0].description %></textarea>
+  <div style="display: flex;flex-direction: column;align-items: center;width: 100vw;">
+    <div><br />
+      <h2>Edit your profile</h2>
+    </div>
+    <div>
+      <form action="/profiledit/profiledata" method="POST"
+        style="display: flex;flex-direction: column;align-items: stretch;width: 90vw;">
+        <br> <br> <br>
+        <h4>Name</h4>
+        <div style="display: flex;flex-direction: row;">
+          <div style="flex-wrap: wrap;flex-grow: 5;">
+            <h5><small>First Name:</small></h5>
+            <input class="form-control" type="text" name="fname" value="<%-data[0].fname%>"
+              style="margin-bottom: 10px">
+          </div>
+          <div style="flex-wrap: wrap;flex-grow: 5;">
+            <h5><small>Last Name:</small></h5>
+            <input class="form-control" type="text" name="lname" value="<%-data[0].lname %>"
+              style="margin-bottom: 10px">
+          </div>
+        </div>
+        <br>
+        <div>
+          <h4>Place </h4>
+
+
+
+
+          <% if(data[0].city) {%>
+            <h5><small>Previously Selected</small></h5>
+            <input class="form-control" disabled type="text" name="city"
+              value="<%- data[0].state %>, <%- data[0].city %>" style="margin-bottom: 10px">
+
+            <% } %>
+              <select onchange="print_city('cityName', this.selectedIndex);" id="statefilter" name="state"
+                class="btn btn-secondary dropdown-toggle" style="background-color: #ffffff;color: black;"></select>
+
+              <select type="text" id="cityName" name="city" class="btn btn-secondary dropdown-toggle"
+                style="background-color: #ffffff;color: black;"></select>
+              <script language="javascript">
+                print_state("statefilter");
+              </script>
+        </div>
+        <br />
+
+        <div>
+          <h4>Contact Information: <small><small>(optional)</small></small> </h4>
+          <h5><small>Phone No.</small></h5>
+          <input class="form-control" type="text" name="phone" value=" <%- data[0].phone %>"
+            style="margin-bottom: 10px">
+          <h5><small>Facebook profile link</small></h5>
+          <input class="form-control" type="url" name="facebook" value=" <%- data[0].facebook %>"
+            style="margin-bottom: 10px">
+          <h5><small>LinkedIn profile link</small></h5>
+          <input class="form-control" type="url" name="linkedin" value=" <%- data[0].linkedin %>"
+            style="margin-bottom: 10px">
+          <h5><small>Twitter profile link</small></h5>
+          <input class="form-control" type="url" name="twitter" value=" <%- data[0].twitter %>"
+            style="margin-bottom: 10px">
+          <h5><small>Instagram profile link</small></h5>
+          <input class="form-control" type="url" name="instagram" value=" <%- data[0].instagram %>"
+            style="margin-bottom: 10px">
+        </div><br>
+        <div>
+          <h4>Tell Something about yourself: </h4>
+          <textarea class="form-control" name="description" rows="5" cols="30"
+            style="margin-bottom: 10px"><%- data[0].description %></textarea>
+
         </div>
         <div class="form-group text-center">
-          <h4>City/Village/Town name: </h4> 
-          <input class="form-control" type="text" name="city" value=" <%- data[0].city %>" style="margin-bottom: 10px">
+          <button type="submit" class="btn btn-outline-primary" style="margin-bottom: 10px">Submit</button>
         </div>
-        <div class="form-group text-center">
-          <h4>Contact Information: </h4> 
-          <input class="form-control" type="text" name="phone" value=" <%- data[0].phone %>" style="margin-bottom: 10px">
-        </div>
-        
-        <div class="form-group text-center">
-              <button type="submit" class="btn btn-outline-primary" style="margin-bottom: 10px">Submit</button>
-        </div>
+
       </form>
     </div>
+    <div></div>
+
   </div>
-</div>
+  <!-- <div>
+    <div class="container-fluid">
+      <h2 class="text-center">Edit your profile</h2>
+      <br />
+      <div class="container border" style="background-color: #F3F3F3; height: 95vh;">
+        <form action="/profiledit/profiledata" method="POST">
+          <div class="form-group text-center">
+            <h4>Tell Something about yourself: </h4>
+            <textarea class="form-control" name="description" rows="5" cols="30"
+              style="margin-bottom: 10px"><%- data[0].description %></textarea>
+          </div>
+          <div class="form-group text-center">
+            <h4>City/Village/Town name: </h4>
+            <input class="form-control" type="text" name="city" value=" <%- data[0].city %>"
+              style="margin-bottom: 10px">
+          </div>
+          <div class="form-group text-center">
+            <h4>Contact Information: </h4>
+            <input class="form-control" type="text" name="phone" value=" <%- data[0].phone %>"
+              style="margin-bottom: 10px">
+          </div>
+
+          <div class="form-group text-center">
+            <button type="submit" class="btn btn-outline-primary" style="margin-bottom: 10px">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> -->
 
 
-<%- include("partials/footer") %>
+  <%- include("partials/footer") %>
