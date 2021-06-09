@@ -188,9 +188,9 @@
                                     </div>
                                 </div>
 
+                                <div class="reply-section">
+                                    <div class="bg-light p-2 w-50 jumbotron">
 
-                                <div class="bg-light p-2 w-50 jumbotron">
-                                    <div class="reply-section">
 
                                         <% for(var w=0; w< commentData[j].replies.length; w++)
                                          {%>
@@ -272,14 +272,14 @@
                                 <div class="d-flex justify-content-around ">
                                     <div class="w-100">
 
-                                        <input type="text " class="form-control mt-1 shadow-none textarea " name="content " placeholder="write a comment... " required>
+                                        <input type="text" class="form-control mt-1 shadow-none textarea " name="content" placeholder="write a comment... " required>
                                     </div>
 
                                     <% var ele=[user._id, 1]%>
 
 
                                         <div class="mt-2 ml-2 text-right">
-                                            <button type="submit " class="btn btn-primary btn-sm shadow-none " name="comment " value="<%=ele %>"><i class="fa fa-comments p-1" aria-hidden="true"></i></button>
+                                            <button type="submit" class="btn btn-primary btn-sm shadow-none " name="comment" value="<%=ele %>"><i class="fa fa-comments p-1" aria-hidden="true"></i></button>
                                         </div>
 
                                 </div>
