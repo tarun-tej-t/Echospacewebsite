@@ -113,9 +113,14 @@
             <br>
             <div class="wrapper">
               <details data-popover="right">
-                <summary>
+                <summary id="clicker-ndc">
                   Click here to Contact
                 </summary>
+                <script>
+                  document.getElementById("clicker-ndc").onclick = () => {
+                    $.post("click", {link: "ndcContact"});
+                  }
+                </script>
                 <div>
                   <p>
                     Contact : <%=user.contact%>

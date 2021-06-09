@@ -117,9 +117,14 @@
                   
                           <div class="wrapper">
                             <details data-popover="right">
-                              <summary>
+                              <summary id="clicker-unemployed">
                                 Click here to Contact
                               </summary>
+                              <script>
+                                document.getElementById("clicker-unemployed").onclick = () => {
+                                  $.post("click", {link: "employmentContact"});
+                                }
+                              </script>
                               <div>
                                 <p>
                                   <%if(user.contact){%>

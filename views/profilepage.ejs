@@ -245,9 +245,14 @@
                 
                         <div class="wrapper">
                           <details data-popover="right">
-                            <summary>
+                            <summary id="clicker-unemployed">
                               Click here to Contact
                             </summary>
+                            <script>
+                              document.getElementById("clicker-unemployed").onclick = () => {
+                                $.post("click", {link: "employmentContact"});
+                              }
+                            </script>
                             <div>
                               <p>
                                 <%if(user.contact){%>
@@ -317,9 +322,14 @@
         <br>
         <div class="wrapper">
           <details data-popover="right">
-            <summary>
+            <summary id="clicker-ndc">
               Click here to Contact
             </summary>
+            <script>
+              document.getElementById("clicker-ndc").onclick = () => {
+                $.post("click", {link: "ndcContact"});
+              }
+            </script>
             <div>
               <p>
                 Contact : <%=user.contact%>
