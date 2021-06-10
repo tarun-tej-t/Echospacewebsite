@@ -59,7 +59,133 @@
   
     <title>Echospace</title>
   </head>
-  
+  <style>
+    .iconn {
+    cursor: pointer;
+ 
+    
+    color: #ffffff;
+}
+
+.iconn span {
+    color: #fff;
+}
+
+.iconn:hover {
+    opacity: 0.7;
+}
+
+
+
+.notificationsn {
+    width: 300px;
+    display: none;
+    position: fixed;
+    top: 63px;
+    right: 62px;
+    border-radius: 5px 0px 5px 5px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 10;
+}
+
+.notificationsn h2 {
+    font-size: 14px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    color: #999
+}
+
+.notificationsn h2 span {
+    color: #f00
+}
+
+.notifications-itemn {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 6px 9px;
+    margin-bottom: 0px;
+    cursor: pointer
+}
+
+.notifications-itemn:hover {
+    background-color: #eee
+}
+
+.notifications-itemn img {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin-right: 9px;
+    border-radius: 50%;
+    margin-top: 2px;
+}
+
+.notifications-itemn .text h4 {
+    color: #777;
+    font-size: 16px;
+    margin-top: 3px;
+}
+
+.notifications-itemn .text p {
+    color: #aaa;
+    font-size: 12px;
+}
+
+.dropdown-menun {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 10rem;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+}
+.dropdown-itemn {
+  display: block;
+  width: 100%;
+  padding: 0.25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.dropdown-itemn:hover, .dropdown-itemn:focus {
+  color: #16181b;
+  text-decoration: none;
+  background-color: #f8f9fa;
+}
+
+.dropdown-itemn.active, .dropdown-itemn:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #007bff;
+}
+
+.dropdown-itemn.disabled, .dropdown-itemn:disabled {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: transparent;
+}
+
+.dropdown-menun.show {
+  display: block;
+}
+  </style>
   <body style="width:100vw;margin: 0;">
   
   
@@ -80,13 +206,18 @@
   
           <div class="col-6 col-xl-2">
             <h1 class="mb-0 site-logo" style="display: flex;flex-direction: row;"><img src="/images/logo-ring.png" style="width: 50px;"/><a href="/" style="font-weight: 900;font-size: xx-large;"> Echospace<span class="text-primary">.</span> </a></h1>
-  
+          
+
+       
+          
+
           </div>
   
           <div class="col-12 col-md-10 d-none d-xl-block">
             <nav class="site-navigation position-relative text-right" role="navigation">
-  
+
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+
                 <li><a href="about" class="nav-link">About</a></li>
                 <li class="has-children">
                   <a href="" class="nav-link">Write your post</a>
@@ -118,7 +249,8 @@
                
   
   
-             
+                <li>            <span class="iconn" id="bell" onclick=startFun()> <i class="fa fa-bell" aria-hidden="true"></i></span>
+                </li>
               
                 <li class="has-children">
                   <a href="" class="nav-link"><i class="fa fa-gear" style="font-size:24px"></i></a>
@@ -132,21 +264,248 @@
                 </li>
               </ul>
             </nav>
+           
+           
+              
           </div>
-  
-  
+          <!-- style="position:fixed;top:26px;right:55px;" -->
+        
+
           <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px;"><a href="#"
-              class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a></div>
+              class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a><span class=" float-right iconn" style="padding-right:15px;padding-top:7px;" id="bell" onclick=startFun()> <h5><i class="fa fa-bell" aria-hidden="true"></i></h5></span> </div>
   
         </div>
       </div>
-  
+      
     </header>
-  
+    <div class="notificationsn" id="boxn">
+      <h2>Notifications - <span id="numberNotifs">0</span></h2>
+      <div class="notifications-itemn" onclick="settingSet()"> 
+          <div class="text">
+              <h4>Set your preferences</h4>
+              <i class="fa fa-gear fa-spin"></i>
+          </div>
+      </div>
+  </div>
+    <div class="notificationsn" id="setting" style="color: #777;">
+      <h2>Set preference for you notifications</h2>
+      <p id="setForGo">Selected: </p>
+      <div class="notifications-itemn" id="cov">
+          <div class="text" onclick="covFun()">
+              <h5>Covid-19 updates</h5>
+          </div>
+          <div class="dropdown-menun" id ="cov-drop" style="display: none;">
+              <div class="dropdown-itemn" onclick="putFun('Financial Help',1)">Financial Help</div>
+              <div class="dropdown-itemn" onclick="putFun('Beds without oxygen',1)">Beds without oxygen</div>
+              <div class="dropdown-itemn" onclick="putFun('Beds with oxygen',1)">Beds with oxygen</div>
+              <div class="dropdown-itemn" onclick="putFun('Medicine Type',1)">Medicine Type</div>
+              <div class="dropdown-itemn" onclick="putFun('Plasma',1)">Plasma</div>
+              <div class="dropdown-itemn" onclick="putFun('Oxygen Concentrator',1)">Oxygen Concentrator</div>
+              <div class="dropdown-itemn" onclick="putFun('Other',1)">Other</div>
+          </div>
+      </div>
+      <div class="notifications-itemn" id="ue">
+          <div class="text" onclick="ueFun()">
+              <h5>Unemployment updates</h5>
+          </div>
+          <div class="dropdown-menun" id ="ue-drop" style="display: none;">
+              <div class="dropdown-itemn" onclick="putFun('IT',2)">IT</div>
+              <div class="dropdown-itemn" onclick="putFun('HR',2)">HR</div>
+              <div class="dropdown-itemn" onclick="putFun('Finance',2)">Finance</div>
+              <div class="dropdown-itemn" onclick="putFun('Manangement/Consulting',2)">Manangement/Consulting</div>
+              <div class="dropdown-itemn" onclick="putFun('Manufacturing',2)">Manufacturing</div>
+              <div class="dropdown-itemn" onclick="putFun('House/Office Work',2)">House/Office Work</div>
+              <div class="dropdown-itemn" onclick="putFun('Supply Chain',2)">Supply Chain</div>
+              <div class="dropdown-itemn" onclick="putFun('Small businesses/Daily Labourers',2)">Small businesses/Daily Labourers</div>
+              <div class="dropdown-itemn" onclick="putFun('Other',2)">Other</div>
+          </div>
+      </div>
+      <div class="notifications-itemn" id="ndc">
+          <div class="text" onclick="ndcFun()">
+              <h5>Natural Disaster update</h5>
+          </div>
+          <div class="dropdown-menun" id ="ndc-drop" style="display: none;">
+              <div class="dropdown-itemn" onclick="putFun('Cyclone',3)">Cyclone</div>
+              <div class="dropdown-itemn" onclick="putFun('Earthquake',3)">Earthquake</div>
+              <div class="dropdown-itemn" onclick="putFun('Floods',3)">Floods</div>
+              <div class="dropdown-itemn" onclick="putFun('Landslides',3)">Landslides</div>
+              <div class="dropdown-itemn" onclick="putFun('Other',3)">Other</div>
+          </div>
+      </div>
+      <div class="notifications-itemn">
+          <div class="text" onclick="sumFun()">
+              <h5 style="padding-left: 100px;">Submit</h5>
+          </div>
+      </div>
+  </div>
     <div class="hero" style="line-height: 1.5;height:67.67px"></div>
-  
+    
     <script src="navbarfiles/js/jquery-3.3.1.min.js"></script>
     <script src="navbarfiles/js/popper.min.js"></script>
     <script src="navbarfiles/js/bootstrap.min.js"></script>
     <script src="navbarfiles/js/jquery.sticky.js"></script>
     <script src="navbarfiles/js/main.js"></script>
+    <script>
+      var cov = 0;
+      var ue = 0;
+      var ndc = 0;
+      var send = [];
+      var sendNum = 0;
+      const putFun = (str,num) => {
+          if (num != sendNum) {
+              send = [];
+          }
+          let x = send.indexOf(str);
+          if (x == -1) {
+              send.push(str);
+          }
+          else {
+              send.splice(x,1);
+          }
+          sendNum = num;
+          let boxM = 'Selected: ';
+          for (let i = 0; i < send.length; i++) {
+              boxM = boxM + ' | ' + send[i];
+          }
+          document.getElementById("setForGo").innerHTML = boxM;
+      }
+      const startFun = () => {
+          clickFun();
+          var datx = (fetch('/notifs').then(res => res.json()).then(data => data));
+          let count = 0;
+          document.getElementById("boxn").innerHTML = '<h2>Notifications - <span id="numberNotifs">0</span></h2>' + '<div class="notifications-itemn" onclick="settingSet()"><div class="text"><h4>Set your preferences  <i class="fa fa-gear fa-spin"></i></h4></div></div>';
+          datx.then(dat => {
+              document.getElementById("boxn").innerHTML = '<h2>Notifications - <span id="numberNotifs">0</span></h2>' + '<div class="notifications-itemn" onclick="settingSet()"><div class="text"><h4>Set your preferences  <i class="fa fa-gear fa-spin"></i></h4></div></div>';
+              var boxD = document.getElementById("boxn").innerHTML;
+              var codeblock1 = '<div class="notifications-itemn">' + '<div class="text">' + '<h4>'
+              var codeblock2 = '</h4>' + '<p>';
+              var codeblock3 = '</p></div></div>';
+              if(dat.covid19 > 0) {
+                  count++;
+                  boxD = boxD + codeblock1 + 'Covid-19' + codeblock2 + 'We have added new posts since your last visit' + codeblock3;
+              }
+              if(dat.unemployment > 0) {
+                  count++;
+                  boxD = boxD + codeblock1 + 'Unemployement' + codeblock2 + 'We have added new posts since your last visit' + codeblock3;
+              }
+              if(dat.ndc > 0) {
+                  count++;
+                  boxD = boxD + codeblock1 + 'Natural Disasters' + codeblock2 + 'We have added new posts since your last visit' + codeblock3;
+              }
+              document.getElementById("boxn").innerHTML = boxD;
+              console.log(count);
+              document.getElementById("numberNotifs").innerHTML = count;
+          });
+          
+      }
+      const settingSet = () => {
+          console.log('shello');
+          document.getElementById('boxn').style.display = 'none';
+          document.getElementById('setting').style.display = 'block';
+      }
+
+      var down = false;
+      const clickFun = () => {
+          if(down){
+              document.getElementById('boxn').style.display = 'none';
+              document.getElementById('setting').style.display = 'none';
+              down = false;
+          }
+          else {
+              document.getElementById('boxn').style.display = 'block';
+              document.getElementById('setting').style.display = 'none';
+              down = true;
+          }
+      };
+      const covFun = () => {
+          if (cov == 0) {
+              cov++;
+              ue = 0;
+              ndc = 0;
+              document.getElementById("cov").style.backgroundColor = '#04AA6D'; 
+              document.getElementById("cov").style.color = 'white';
+              document.getElementById("ue").style.backgroundColor = 'white'; 
+              document.getElementById("ue").style.color = '#777';
+              document.getElementById("ndc").style.backgroundColor = 'white'; 
+              document.getElementById("ndc").style.color = '#777';
+              document.getElementById("cov-drop").style.display = 'block';
+              document.getElementById("ue-drop").style.display = 'none';
+              document.getElementById("ndc-drop").style.display = 'none';
+          }
+          else {
+              cov--;
+              document.getElementById("cov").style.backgroundColor = 'white'; 
+              document.getElementById("cov").style.color = '#777';
+              document.getElementById("cov-drop").style.display = 'none';
+          }
+      }
+      const ueFun = () => {
+          if (ue == 0) {
+              ue++;
+              cov = 0;
+              ndc = 0;
+              document.getElementById("ue").style.backgroundColor = '#04AA6D'; 
+              document.getElementById("ue").style.color = 'white';
+              document.getElementById("cov").style.backgroundColor = 'white'; 
+              document.getElementById("cov").style.color = '#777';
+              document.getElementById("ndc").style.backgroundColor = 'white'; 
+              document.getElementById("ndc").style.color = '#777';
+              document.getElementById("cov-drop").style.display = 'none';
+              document.getElementById("ndc-drop").style.display = 'none';
+              document.getElementById("ue-drop").style.display = 'block';
+          }
+          else {
+              ue--;
+              document.getElementById("ue").style.backgroundColor = 'white'; 
+              document.getElementById("ue").style.color = '#777';
+              document.getElementById("ue-drop").style.display = 'none';
+          }
+      }
+      const ndcFun = () => {
+          if (ndc == 0) {
+              ndc++;
+              cov = 0;
+              ue = 0;
+              document.getElementById("ndc").style.backgroundColor = '#04AA6D'; 
+              document.getElementById("ndc").style.color = 'white';
+              document.getElementById("cov").style.backgroundColor = 'white'; 
+              document.getElementById("cov").style.color = '#777';
+              document.getElementById("ue").style.backgroundColor = 'white'; 
+              document.getElementById("ue").style.color = '#777';
+              document.getElementById("cov-drop").style.display = 'none';
+              document.getElementById("ue-drop").style.display = 'none';
+              document.getElementById("ndc-drop").style.display = 'block';
+          }
+          else {
+              ndc--;
+              document.getElementById("ndc").style.backgroundColor = 'white'; 
+              document.getElementById("ndc").style.color = '#777';
+              document.getElementById("ndc-drop").style.display = 'none';
+          }
+      }
+      const sumFun = () => {
+          let p = '';
+          if (sendNum == 1) {p = 'covid19';}
+          else if (sendNum == 2) {p = 'employment';}
+          else if (sendNum == 3) {p = 'ndc';}
+          else {
+              return;
+          }
+          let dat = {
+              'preferredGroup' : p,
+              'preferredSubGroup' : send
+          }
+          let ret = fetch('/notifs', 
+          {method: 'post', body : JSON.stringify(dat),headers : {
+              "content-type" : "application/json"
+          }}).then(res => res.json()).then(data => data);
+
+          send = [];
+          sendNum = 0;
+          let boxM = 'Selected: ';
+          document.getElementById("setForGo").innerHTML = boxM;
+          document.getElementById('boxn').style.display = 'none';
+          document.getElementById('setting').style.display = 'none';
+          down = false;
+      }
+  </script>
