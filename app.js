@@ -919,11 +919,21 @@ app.get("/feed-ndc", function(req, res) {
         ClickData.findOneAndUpdate({ user: req.user.username }, { $inc: { "naturalDisaster": 1 } }, (err) => {
             if (err) console.log(err);
         });
+        // PostHelpndc.find({}, function(err, foundPosthelpndc) {
+        //     res.render("feedlogout-ndc", {
+        //         posthelpndcs: foundPosthelpndc
+        //     });
+        // });
         PostHelpndc.find({}, function(err, foundPosthelpndc) {
-            res.render("feedlogout-ndc", {
-                posthelpndcs: foundPosthelpndc
-            });
+            comments.find({}, function(err, foundComment) {
+                res.render("feed-ndc", {
+                    posthelpndcs: foundPosthelpndc,
+                    commentData: foundComment
+
+                });
+            })
         });
+
     } else {
         res.redirect("/login");
     }
@@ -1312,6 +1322,62 @@ app.post("/feed-ue", bodyParser.urlencoded({ extended: false }), function(req, r
 });
 
 
+app.post("/feed-ndc", bodyParser.urlencoded({ extended: false }), function(req, res) {
+
+
+    var reis = req.body.comment.split(",");
+    console.log(reis)
+    if (reis[1] == 0) {
+        comments.updateOne({ "_id": ObjectID(reis[0]) }, {
+                $push: {
+                    "replies": {
+                        "name": "Annonymous",
+                        "content": req.body.content,
+                        "date": new Date()
+
+                    }
+                }
+            }).then((obj) => {
+
+                console.log(obj);
+            })
+            .catch((err) => {
+                console.log(err)
+
+            })
+        console.log(reis[0])
+        res.redirect("/feed-ndc");
+
+    } else {
+        const comment = new comments({
+            name: req.body.name,
+
+            content: req.body.content,
+
+            time: new Date()
+        });
+
+
+        comment.save(function(err) {
+            if (!err) {
+
+
+
+                PostHelpndc.updateOne({ "_id": ObjectID(reis[0]) }, { $push: { "comments": comment.id } }).then((obj) => {
+
+                        console.log(obj);
+                    })
+                    .catch((err) => {
+                        console.log(err)
+
+                    })
+
+                res.redirect("/feed-ndc");
+            }
+        });
+    }
+
+});
 
 app.post("/feed", bodyParser.urlencoded({ extended: false }), function(req, res) {
     var reis = req.body.comment.split(",");
