@@ -41,6 +41,7 @@ var validuser;
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static("public"));
 
 app.use(
@@ -512,6 +513,7 @@ const posthelpSchema = {
     requirement: String,
     result: String,
     time: Date,
+    epochtime: Number,
     userposthelp: String,
     comments: [String]
 
@@ -538,6 +540,7 @@ app.post("/post", bodyParser.urlencoded({ extended: false }), [
         const postalert = posterrors.array()
         res.render('post', { postalert })
     } else {
+        let newTime = new Date()
         const posthelp = new PostHelp({
             name: req.body.name,
             age: req.body.age,
@@ -549,7 +552,8 @@ app.post("/post", bodyParser.urlencoded({ extended: false }), [
             content: req.body.content,
             requirement: req.body.requirement,
             result: req.body.result,
-            time: new Date(),
+            time: newTime,
+            epochtime: newTime.getTime(),
             userposthelp: usernameafterlogin,
         });
 
@@ -571,7 +575,7 @@ const posthelpndcSchema = {
     contact: Number,
     content: String,
     ndt: String,
-
+    epochtime: Number,
     time: Date,
     userposthelpndc: String,
     comments: [String]
@@ -599,6 +603,7 @@ app.post("/post-ndc", bodyParser.urlencoded({ extended: false }), [
         const postalert = posterrors.array()
         res.render('post-ndc', { postalert })
     } else {
+        let newTime = new Date();
         const posthelpndc = new PostHelpndc({
             name: req.body.name,
             age: req.body.age,
@@ -608,8 +613,8 @@ app.post("/post-ndc", bodyParser.urlencoded({ extended: false }), [
             contact: req.body.contact,
             content: req.body.content,
             ndt: req.body.ndt,
-
-            time: new Date(),
+            epochtime: newTime.getTime(),
+            time: newTime,
             userposthelpndc: usernameafterlogin
         });
 
@@ -635,6 +640,7 @@ const posthelpueSchema = {
     sector: String,
     email: String,
     time: Date,
+    epochtime: Number,
     userposthelpue: String,
     comments: [String]
 
@@ -661,6 +667,7 @@ app.post("/post-ue", bodyParser.urlencoded({ extended: false }), [
         const postalert = posterrors.array()
         res.render('post-ue', { postalert })
     } else {
+        let newTime = new Date();
         const posthelpue = new PostHelpue({
             name: req.body.name,
             age: req.body.age,
@@ -672,7 +679,8 @@ app.post("/post-ue", bodyParser.urlencoded({ extended: false }), [
             contact: req.body.contact,
             sector: req.body.sector,
             email: req.body.email,
-            time: new Date(),
+            time: newTime,
+            epochtime: newTime.getTime(),
             userposthelpue: usernameafterlogin
         });
 
@@ -1491,6 +1499,201 @@ app.post("/services", bodyParser.urlencoded({ extended: false }), function(req, 
 
 
 
+});
+
+const notificationSchema = new mongoose.Schema({
+    user: String,
+    lastPostTime: Date,
+    preferredGroup: String,
+    preferredSubGroup: [String] 
+  });
+const Notif = mongoose.model('Notif',notificationSchema);
+app.post("/notifs", (req,res) => {
+    if (req.isAuthenticated()) {
+      let dateNow = new Date();
+      Notif.findOneAndUpdate({user: req.user.username}, {lastPostTime : dateNow, preferredGroup: req.body.preferredGroup, preferredSubGroup: req.body.preferredSubGroup},(err,dat) => {
+        //console.log(req.body);
+        if (err) {
+          console.log(err);
+          res.status(err.status||500);
+        }
+      });
+    }
+  });
+  
+  
+  
+app.get("/notifs", (req,res) => {
+if (req.isAuthenticated()) {
+    Notif.find({user: req.user.username}, (err,data) => {
+    let dateNow = new Date();
+    if(err) {
+        console.log(err);
+        res.status(500);
+    }
+    else {
+        if (data.length == 0) {
+        let newNot = new Notif({user: req.user.username, lastPostTime: dateNow, preferredGroup: "any", preferredSubGroup: []});
+        newNot.save((err) => {
+            if (err) {
+            console.log(err);
+            res.status(500);
+            }
+        });
+        res.json({
+            "any" : 1,
+            "covid19": 0,
+            "ndc": 0,
+            "unemployment": 0 
+        })
+        }
+        else {
+        dateNow = data[0].lastPostTime.getTime();
+        if (data[0].preferredGroup == "any") {
+            let ret = {
+            "any": 1,
+            "covid19": 0,
+            "ndc": 0,
+            "unemployment": 0 
+            }
+            PostHelp.find({epochtime: {$gt: dateNow}}, (err,dat) => {
+            if (err) {
+                console.log(err);
+                res.status(err.status||500);
+            }
+            else {
+                if(dat.length > 4) {
+                ret.covid19 = dat.length;
+                }
+            }
+            });
+            PostHelpndc.find({epochtime: {$gt: dateNow}}, (err,dat) => {
+            if (err) {
+                console.log(err);
+                res.status(err.status||500);
+            }
+            else {
+                if(dat.length > 4) {
+                ret.ndc = dat.length;
+                }
+            }
+            });
+            PostHelpue.find({epochtime: {$gt: dateNow}}, (err,dat) => {
+            if (err) {
+                console.log(err);
+                res.status(err.status||500);
+            }
+            else {
+                if(dat.length > 4) {
+                ret.unemployment = dat.length;
+                }
+            }
+            });
+            res.json(ret);
+        }
+        else {
+            if (data[0].preferredSubGroup == null || data[0].preferredSubGroup.length == 0) {
+            let ret = {
+                "any": 1,
+                "covid19": 0,
+                "ndc": 0,
+                "unemployment": 0 
+            }
+            if (data[0].preferredGroup == 'covid19' || data[0].preferredGroup == 'any' || data[0].preferredGroup == null) {
+                PostHelp.find({epochtime: {$lte: dateNow}}, (err,dat) => {
+                if (err) {
+                    console.log(err);
+                    res.status(err.status||500);
+                }
+                else {
+                    //console.log(dat.length);
+                    if(dat.length > 4) {
+                    ret.covid19 = dat.length;
+                    }
+                }
+                });
+            }
+            if (data[0].preferredGroup == 'employment'|| data[0].preferredGroup == 'any' || data[0].preferredGroup == null) {
+                PostHelpue.find({epochtime: {$gt: dateNow}}, (err,dat) => {
+                if (err) {
+                    console.log(err);
+                    res.status(err.status||500);
+                }
+                else {
+                    if(dat.length > 4) {
+                    ret.unemployment = dat.length;
+                    }
+                }
+                });
+            }
+            if (data[0].preferredGroup == 'ndc'|| data[0].preferredGroup == 'any' || data[0].preferredGroup == null) {
+                PostHelpndc.find({epochtime: {$gt: dateNow}}, (err,dat) => {
+                if (err) {
+                    console.log(err);
+                    res.status(err.status||500);
+                }
+                else {
+                    if(dat.length > 4) {
+                    ret.ndc = dat.length;
+                    }
+                }
+                });
+            }
+            res.json(ret);
+            }
+            else {
+            let ret = {
+                "any": 0,
+                "covid19": 0,
+                "ndc": 0,
+                "unemployment": 0 
+            }
+            PostHelp.find({epochtime : {$gt: dateNow}, requirement: {$in : data[0].preferredSubGroup}}, (err,dat) => {
+                if (err) {
+                console.log(err);
+                res.status(err.status||500);
+                }
+                else {
+                if (dat.length > 4) {
+                    ret.covid19 = dat.length;
+                }
+                }
+            });
+            PostHelpndc.find({epochtime : {$gt: dateNow}, requirement: {$in : data[0].preferredSubGroup}}, (err,dat) => {
+                if (err) {
+                console.log(err);
+                res.status(err.status||500);
+                }
+                else {
+                if (dat.length > 4) {
+                    ret.ndc = dat.length;
+                }
+                }
+            });
+            PostHelpue.find({epochtime : {$gt: dateNow}, requirement: {$in : data[0].preferredSubGroup}}, (err,dat) => {
+                if (err) {
+                console.log(err);
+                res.status(err.status||500);
+                }
+                else {
+                if (dat.length > 4) {
+                    ret.unemployment = dat.length;
+                }
+                }
+            });
+            res.json(ret);
+            }
+        }
+        Notif.findOneAndUpdate({user: req.user.username}, {lastPostTime: new Date()}, (err,data) => {
+            if(err) {
+            res.status(err.status||500);
+            console.log(err);
+            }
+        });
+        }
+    }
+    });
+}
 });
 
 app.listen(3000);
