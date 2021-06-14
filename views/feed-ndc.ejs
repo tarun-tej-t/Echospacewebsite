@@ -143,6 +143,25 @@
             justify-content: flex-start;
             align-items: left;
         }
+        
+        .dots {
+            height: 4px;
+            width: 4px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block
+        }
+        
+        button,
+        input[type="submit"] {
+            background: none;
+            color: inherit;
+            border: none;
+            padding: 0;
+            font: inherit;
+            cursor: pointer;
+            outline: inherit;
+        }
     </style>
 
     <div class="fpbg">
@@ -243,8 +262,16 @@
                                                     </div>
                                                 </div> <small><%=dateString%></small>
                                             </div>
-                                            <div class="action d-flex justify-content-between mt-2 align-items-center">
-                                                <div class="reply px-4"> <small>Reply</small>
+                                            <div class="action d-flex justify-content-start mt-2 align-items-center">
+                                                <div class="reply"> <small>Reply</small>
+                                                </div>
+                                                <span class="dots mx-1"></span>
+                                                <div>
+                                                    <form action="" method="post">
+                                                        <% var ele=[commentData[j]._id, 2,user._id]%>
+                                                            <button type="submit" value="<%=ele %>" name="comment"><small class="delete ">Delete</small></button>
+
+                                                    </form>
                                                 </div>
                                             </div>
 
