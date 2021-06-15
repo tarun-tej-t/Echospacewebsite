@@ -1,148 +1,327 @@
-<%- include('partials/headerlogout') %>
+<%- include('partials/header') %>
 
-  <%-include("subbar-services")%>
     <!-- <style>
-      .fpbgs {
-        background-image: url("/images/feed1.jpg");
-      background-color: #F3F2EF;
-        background-attachment: fixed;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-
-      }
+  .fpbg{
+    /* background-image: url("/images/feed1.jpg"); */
+    background-color: #F3F2EF;
+          background-attachment: fixed;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+  
+  }
+  
     </style> -->
     <style>
-      /* popover */
-      details[data-popover] {
-        display: inline;
-        position: relative;
-      }
-
-      details[data-popover]>summary:focus {
-        outline: none;
-      }
-
-      details[data-popover]>summary::-webkit-details-marker {
-        display: none;
-      }
-
-      details[data-popover]>summary {
-        list-style: none;
-        text-decoration: underline dotted #006B96;
-      }
-
-      details[data-popover]>summary+* {
-        position: absolute;
-        display: block;
-        z-index: 1;
-        width: 45vw;
-        animation: spin 3s linear infinite;
-        border-radius: 10%;
-        padding: 10px;
-        background: white;
-      }
-      @keyframes spin { 
-        0%{
-          border: dotted 1px #006B96;
+        .comment {
+            width: 100%;
+            margin-top: 50px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            border: 2px solid black;
         }
-        50%{
-          border: dashed 2px #006B96;
+        
+        .card {
+            border: none;
+            border-radius: 4px;
+            background-color: #cbd6dd;
+            margin-bottom: 8px;
         }
-  100% { 
-    border: groove 3px #006B96;
-  }
-}
-
-      details[data-popover]>*+* {
-        /* hide detail elements that would ruin the popover */
-        display: none;
-      }
-
-      details[data-popover="up"]>summary+* {
-        bottom: calc(0.5rem + 100%);
-        right: 50%;
-        transform: translateX(50%);
-      }
-
-      details[data-popover="down"]>summary+* {
-        top: calc(0.5rem + 100%);
-        right: 50%;
-        transform: translateX(50%);
-      }
-
-      details[data-popover="left"]>summary+* {
-        right: calc(1rem + 100%);
-        bottom: 50%;
-        transform: translateY(50%);
-      }
-
-      details[data-popover="right"]>summary+* {
-        left: calc(0.3rem + 100%);
-        bottom: 50%;
-        transform: translateY(50%);
-      }
-
-      /* wrapper setup */
-      .wrapper {
-        width: 100%;
-
-      }
+        
+        .user-img {
+            margin-top: 4px;
+        }
+        
+        .reply small {
+            color: #b7b4b4;
+            user-select: none;
+        }
+        
+        .reply small:hover {
+            color: green;
+            cursor: pointer
+        }
+        
+        .divide {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .show-comments {
+            text-decoration: underline;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .show-comments:hover {
+            color: green;
+        }
+        
+        .comment-section {
+            flex-direction: column;
+        }
+        
+        .textarea {
+            resize: none;
+            margin-bottom: 10px;
+        }
+        
+        .cursor:hover {
+            color: blue
+        }
+        
+        .cursor {
+            cursor: pointer
+        }
+        
+        .reply-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: left;
+        }
     </style>
 
-    <div class="fpbgs">
-      <br>
+    <div class="fpbg">
 
-      <% postsers.reverse().forEach(function(post){ %>
-
-        <div style="padding: 2%" class="jumbotron">
-          <div class="row">
-            <div class="col-8">
-              <h2 style="word-break: break-word;font-size: 35px; display: table-cell; vertical-align: middle"
-                class="display-4">
-                <%=post.pname%>
-              </h2>
-            </div>
-            <div class="col-4">
-              <p style="display: table-cell">
-                <%if(post.city){%>
-                  <%=post.city%>,
-                    <%}%>
-                      <%=post.state%>
-              </p>
-            </div>
-          </div>
-          <hr />
-          <div class="row">
-            <p style="font-weight: bold;" class="first">
-              Type of Organization : <%=post.type%> | Service Offered : <%=post.help%>
-            </p>
-            <p style="text-align: justify;">
-              <%=post.detail%>
-            </p>
-            <p>
-            </p>
-          </div>
-          <div class="wrapper">
-            <details data-popover="right">
-              <summary>
-                Click here to Contact
-              </summary>
-              <div>
-                <p>
-                  Contact : <%=post.phone%>
-                </p>
-                <a href="tel:<%=post.phone%>"> Call </a>/
-                <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=post.phone%>">Whatsapp</a>
-              </div>
-            </details>
-          </div>
-          </p> Posted On: <small>
-            <%=post.time%>
-          </small>
-          <br />
-        </div>
         <br>
+        <% postsers.reverse().forEach(function(post,index){ %>
 
-        <% }) %></div>
-          <%- include("partials/footer") %>
+            <div style="padding: 2%" class="jumbotron">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="word-break: break-word;font-size: 35px; display: table-cell; vertical-align: middle" class="display-4">
+                            <%=post.pname%>
+                        </h2>
+                    </div>
+                    <div class="col-4">
+                        <p style="display: table-cell">
+                            <%=post.city%> ,
+                                <%=post.state%>
+                        </p>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <p style="font-weight: bold; " class="firs">
+                        Type of Organization :
+                        <%=post.type%> | Service Offered :
+                            <%=post.help%>
+                    </p>
+                </div>
+                <div class="row">
+                    <div style="  padding-left: 15px; padding-right: 15px; padding-top: 10px;white-space: pre-line;">
+                        <p style="text-align: justify;">
+                            <%=post.detail%>
+                        </p>
+                        <br><br> Contact :
+                        <%=post.phone%>
+                    </div>
+
+                </div>
+
+
+
+                <br><br>
+
+
+                <p>
+                    <a href="tel:<%=post.phone%>"> Call </a>/
+                    <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=post.phone%>">Whatsapp</a>
+                </p>
+                <div class="divide">
+                    <div>
+                        Posted On: <small><%=post.time%></small>
+                    </div>
+                    <div class="show-comments">
+                        <%=post.comments.length%> comments</div>
+                </div>
+            </div>
+
+            <!-- ----------------------------------CODE BY MANNAN------------------------------------->
+            <div class="comment-section">
+                <% for(var i=0; i < post.comments.length; i++) 
+              { %>
+
+
+                    <% for(var j=0; j < commentData.length; j++) { %>
+                        <% if(String(commentData[j]._id)==String(post.comments[i])) 
+                        {%>
+                            <%
+                          
+                                var  dateString = String(commentData[j].time);
+                            
+                                dateString = dateString.substr(0,15)
+
+
+                        %>
+
+
+                                <div class="container">
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-md-8">
+
+                                            <div class="card p-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="user d-flex flex-row align-items-center"> <span><small class="font-weight-bold text-primary"><%=commentData[j].name%></small><div> <small class="font-weight-bold"><%=commentData[j].content%></small></span>
+                                                    </div>
+                                                </div> <small><%=dateString%></small>
+                                            </div>
+                                            <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                <div class="reply px-4"> <small>Reply</small>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="reply-section">
+                                    <div class="bg-light p-2 w-50 jumbotron">
+
+
+                                        <% for(var w=0; w< commentData[j].replies.length; w++)
+                                         {%>
+                                            <%
+                          
+                                                 var  dateString = String(commentData[j].replies[w].date);
+                      
+                                                   dateString = dateString.substr(0,15)
+                                        
+
+                                                %>
+
+                                                <div class=" mb-2">
+
+                                                    <div class="card p-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="user d-flex flex-row align-items-center"> <span><small class="font-weight-bold text-primary"><%=commentData[j].replies[w].name%></small> <small 
+                                                                    class="font-weight-bold">
+                                                                    <div class= "pr-3"><%=commentData[j].replies[w].content%></small></span> </div>
+                                                        </div>
+                                                        <small><%=dateString%></small>
+                                                    </div>
+
+
+
+
+                                                </div>
+                                    </div>
+
+
+
+
+
+
+
+                                    <%} %>
+                                        <form method="post" action="">
+                                            <div class="d-flex flex-row  justify-content-around">
+                                                <div class="w-75">
+
+                                                    <input type="text" class="form-control mr-1 shadow-none textarea" name="content" placeholder="write reply..." required>
+                                                </div>
+                                                <% var ele=[commentData[j]._id, 0]%>
+
+
+                                                    <div class="mt-1 ml-2 text-right">
+                                                        <button type="submit" class="btn btn-primary btn-sm shadow-none" name="comment" value="<%=ele %>"><i class="fa fa-reply p-1 mr-2" aria-hidden="true"></i></button>
+                                                    </div>
+
+                                            </div>
+                                        </form>
+                                </div>
+            </div>
+    </div>
+    <%  
+                            break %>
+
+        <%}
+                    
+                    
+                    
+                     %>
+
+            <%}%>
+
+
+                <% } %>
+
+                    </div>
+
+                    <div class="jumbotron p-2 bg-light w-50">
+
+                        <form method="post" action="">
+                            <div class="container">
+                                <div class="d-flex justify-content-around ">
+                                    <div class="w-100">
+
+                                        <input type="text" class="form-control mt-1 shadow-none textarea " name="content" placeholder="write a comment... " required>
+                                    </div>
+
+                                    <% var ele=[post._id, 1]%>
+
+
+                                        <div class="mt-2 ml-2 text-right">
+                                            <button type="submit" class="btn btn-primary btn-sm shadow-none " name="comment" value="<%=ele %>"><i class="fa fa-comments p-1" aria-hidden="true"></i></button>
+                                        </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+
+
+
+
+
+                    <% }) %>
+
+
+
+                        </div>
+                        </div>
+
+                        <script>
+                            var show_comments = document.querySelectorAll(".show-comments")
+                            var comment_section = document.querySelectorAll(".comment-section");
+                            var reply_button = document.querySelectorAll(".reply");
+                            var replies_section = document.querySelectorAll(".reply-section");
+
+                            replies_section.forEach((x) => {
+                                x.style.display = 'none';
+                            })
+
+
+                            console.log(replies_section);
+                            comment_section.forEach((x) => {
+                                x.style.display = 'none';
+                            })
+                            reply_button.forEach((x, index) => {
+                                x.addEventListener('click', function() {
+                                    if (replies_section[index].style.display == "none")
+
+                                        replies_section[index].style.display = "flex";
+                                    else
+                                        replies_section[index].style.display = "none";
+
+
+                                });
+                            });
+                            show_comments.forEach((x, index) => {
+                                x.addEventListener('click', function() {
+                                    if (comment_section[index].style.display == "none")
+
+                                        comment_section[index].style.display = "flex";
+                                    else
+                                        comment_section[index].style.display = "none";
+
+
+                                });
+                            });
+                        </script>
+                        <%- include('partials/footer') %>
