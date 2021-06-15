@@ -1,5 +1,5 @@
-<%- include('partials/header') %>
-
+<%- include('partials/headerlogout') %>
+<%- include('partials/subbar-services') %>
     <!-- <style>
   .fpbg{
     /* background-image: url("/images/feed1.jpg"); */
@@ -13,6 +13,68 @@
   
     </style> -->
     <style>
+          details[data-popover] {
+            display: inline;
+            position: relative;
+        }
+        
+        details[data-popover]>summary:focus {
+            outline: none;
+        }
+        
+        details[data-popover]>summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        details[data-popover]>summary {
+            list-style: none;
+            text-decoration: underline dotted #006B96;
+        }
+        
+        details[data-popover]>summary+* {
+            position: absolute;
+            display: block;
+            z-index: 1;
+            width: 45vw;
+            border: solid 1px #006B96;
+            border-radius: 5%;
+            padding: 10px;
+            background: white;
+        }
+        
+        details[data-popover]>*+* {
+            /* hide detail elements that would ruin the popover */
+            display: none;
+        }
+        
+        details[data-popover="up"]>summary+* {
+            bottom: calc(0.5rem + 100%);
+            right: 50%;
+            transform: translateX(50%);
+        }
+        
+        details[data-popover="down"]>summary+* {
+            top: calc(0.5rem + 100%);
+            right: 50%;
+            transform: translateX(50%);
+        }
+        
+        details[data-popover="left"]>summary+* {
+            right: calc(1rem + 100%);
+            bottom: 50%;
+            transform: translateY(50%);
+        }
+        
+        details[data-popover="right"]>summary+* {
+            left: calc(0.3rem + 100%);
+            bottom: 50%;
+            transform: translateY(50%);
+        }
+        /* wrapper setup */
+        
+        .wrapper {
+            width: 100%;
+        }
         .comment {
             width: 100%;
             margin-top: 50px;
@@ -104,32 +166,60 @@
                 </div>
                 <hr />
                 <div class="row">
-                    <p style="font-weight: bold; " class="firs">
+                    <p style="font-weight: bold; " class="first">
                         Type of Organization :
                         <%=post.type%> | Service Offered :
                             <%=post.help%>
                     </p>
                 </div>
                 <div class="row">
-                    <div style="  padding-left: 15px; padding-right: 15px; padding-top: 10px;white-space: pre-line;">
-                        <p style="text-align: justify;">
+                    <div class="col-12">
+                        <p style="text-align: justify;white-space: pre-line;">
                             <%=post.detail%>
                         </p>
-                        <br><br> Contact :
-                        <%=post.phone%>
+                        <div class="wrapper">
+                            <details data-popover="right">
+                                <summary id="clicker-unemployed">
+                                    Click here to Contact
+                                </summary>
+
+                                <div>
+                                    <p>
+                                        <%if(post.phone){%>
+                                            Contact :
+                                            <%=post.phone%>
+                                                <%}%>
+                                                    <br/>
+                                                    <a href="tel:<%=post.phone%>"> Call </a>/
+                                                    <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=post.phone%>">Whatsapp</a>
+                                    </p>
+                                    <%if(post.email){%>
+                                        Email :
+                                        <a href="mailto:<%=post.email%>">
+                                            <%=user.email%>
+                                        </a>
+                                        <%}%>
+                                </div>
+                            </details>
+                            <script>
+                                document.getElementById("clicker-unemployed").onclick = () => {
+                                    $.post("click", {
+                                        link: "employmentContact"
+                                    });
+                                }
+                            </script>
+                        </div>
+                    
                     </div>
 
                 </div>
 
 
 
-                <br><br>
+               
 
 
-                <p>
-                    <a href="tel:<%=post.phone%>"> Call </a>/
-                    <a target="_blank" href="https://api.whatsapp.com/send?phone=+91<%=post.phone%>">Whatsapp</a>
-                </p>
+               <br/>
                 <div class="divide">
                     <div>
                         Posted On: <small><%=post.time%></small>
@@ -283,8 +373,7 @@
 
 
 
-                        </div>
-                        </div>
+                     
 
                         <script>
                             var show_comments = document.querySelectorAll(".show-comments")

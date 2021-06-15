@@ -1,4 +1,5 @@
-<%- include('partials/header') %>
+<%- include('partials/headerlogout') %>
+<%- include('partials/subbar-unemployment') %>
 
     <!-- <style>
   .fpbg{
@@ -155,6 +156,9 @@
                         <h2 style="font-size: 30px; display: table-cell; vertical-align: middle" class="display-4">
                             <%=user.name%>
                         </h2>
+                        <%if(user.age){%>
+                            Age: <%=user.age%>
+                              <%}%>
                     </div>
                     <div class="col-4">
                         <p style="display: table-cell" style="color: black;font-weight: 900;font-variant: small-caps;">
@@ -165,11 +169,11 @@
                 </div>
                 <hr />
                 <p style="font-weight: bold" class="first">
-                    Type of Job required:
-                    <%=user.Jyl%>
+                    Sector: <%=user.sector%>   <%if(user.Jyl){%>| Type of Job required: <%=user.Jyl%>   <%}%>
+
                 </p>
                 <div class="row">
-                    <div class="col-8" style="  padding-left: 15px; ">
+                    <div class="col-12" style="  padding-left: 15px; ">
                         <br/>
 
                         <%if(user.EorS){%>
@@ -217,7 +221,7 @@
                     </div>
 
                 </div>
-
+<br/>
                 <div class="divide">
                     <div>
                         Posted On: <small><%=user.time%></small>
@@ -372,10 +376,12 @@
 
                     <% }) %>
 
-
-
-                        </div>
-                        </div>
+                    <div>
+                                <div style="padding: 2%" class="jumbotron">
+                                  <h1 style="text-align: center;">No posts Available</h1>
+                                </div>
+                          
+                              </div>
 
                         <script>
                             var show_comments = document.querySelectorAll(".show-comments")

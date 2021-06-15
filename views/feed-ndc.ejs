@@ -186,13 +186,7 @@
                                 <summary id="clicker-ndc">
                                     Click here to Contact
                                 </summary>
-                                <script>
-                                    document.getElementById("clicker-ndc").onclick = () => {
-                                        $.post("click", {
-                                            link: "ndcContact"
-                                        });
-                                    }
-                                </script>
+                               
                                 <div>
                                     <p>
                                         Contact :
@@ -206,7 +200,7 @@
                     </div>
 
                 </div>
-
+                <br/>
                 <div class="divide">
                     <div>
                         Posted On: <small><%=user.time%></small>
@@ -369,6 +363,13 @@
 
                         </div>
                         <script>
+                                    document.getElementById("clicker-ndc").onclick = () => {
+                                        $.post("click", {
+                                            link: "ndcContact"
+                                        });
+                                    }
+                                </script>
+                        <script>
                             var show_comments = document.querySelectorAll(".show-comments")
                             var comment_section = document.querySelectorAll(".comment-section");
                             var reply_button = document.querySelectorAll(".reply");
@@ -406,4 +407,6 @@
                                 });
                             });
                         </script>
+
+                        
                         <%- include('partials/footer') %>

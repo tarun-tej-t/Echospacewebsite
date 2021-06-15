@@ -41,6 +41,7 @@ var validuser;
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static("public"));
 
 app.use(
@@ -499,6 +500,51 @@ app.post("/filterposts", function(req, res) {
     }
     res.redirect("/filterposts");
 });
+app.post("/filterposts-unemployment", function(req, res) {
+    global.cityfilter = req.body.cityfilter;
+    global.statefilter = req.body.statefilter;
+    global.requirementfilter = req.body.requirementfilter;
+
+    requirementname = requirementfilter;
+    cityname = cityfilter;
+    statename = statefilter;
+    if (req.isAuthenticated()) {
+        ClickData.find({ user: req.user.username }, (err, data) => {
+            if (data.length === 0) {
+                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0 });
+                newClickData.save((err) => {
+                    if (err) console.log(err);
+                });
+            }
+        });
+        ClickData.findOneAndUpdate({ user: req.user.username }, {
+            $inc: {
+                [requirementfilter]: 1
+            }
+        }, (err) => {
+            if (err) console.log(err);
+        });
+    }
+   
+        if (req.isAuthenticated()) {
+            PostHelpue.find({ "name": { $ne: null } }, function(err, foundPosthelpue) {
+                comments.find({}, function(err, foundComment) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (foundPosthelpue) {
+                        res.render("filterposts-unemployment", { posthelpues: foundPosthelpue, citysearch: cityname, statesearch: statename, requirementsearch: requirementname,commentData:foundComment });
+    
+                    }
+                }
+            });
+            });
+        } else {
+            res.redirect("/login");
+        }
+
+   
+});
 
 const posthelpSchema = {
     name: String,
@@ -512,6 +558,7 @@ const posthelpSchema = {
     requirement: String,
     result: String,
     time: Date,
+    epochtime: Number,
     userposthelp: String,
     comments: [String]
 
@@ -538,6 +585,7 @@ app.post("/post", bodyParser.urlencoded({ extended: false }), [
         const postalert = posterrors.array()
         res.render('post', { postalert })
     } else {
+        let newTime = new Date()
         const posthelp = new PostHelp({
             name: req.body.name,
             age: req.body.age,
@@ -549,7 +597,8 @@ app.post("/post", bodyParser.urlencoded({ extended: false }), [
             content: req.body.content,
             requirement: req.body.requirement,
             result: req.body.result,
-            time: new Date(),
+            time: newTime,
+            epochtime: newTime.getTime(),
             userposthelp: usernameafterlogin,
         });
 
@@ -571,7 +620,7 @@ const posthelpndcSchema = {
     contact: Number,
     content: String,
     ndt: String,
-
+    epochtime: Number,
     time: Date,
     userposthelpndc: String,
     comments: [String]
@@ -599,6 +648,7 @@ app.post("/post-ndc", bodyParser.urlencoded({ extended: false }), [
         const postalert = posterrors.array()
         res.render('post-ndc', { postalert })
     } else {
+        let newTime = new Date();
         const posthelpndc = new PostHelpndc({
             name: req.body.name,
             age: req.body.age,
@@ -608,8 +658,8 @@ app.post("/post-ndc", bodyParser.urlencoded({ extended: false }), [
             contact: req.body.contact,
             content: req.body.content,
             ndt: req.body.ndt,
-
-            time: new Date(),
+            epochtime: newTime.getTime(),
+            time: newTime,
             userposthelpndc: usernameafterlogin
         });
 
@@ -635,6 +685,7 @@ const posthelpueSchema = {
     sector: String,
     email: String,
     time: Date,
+    epochtime: Number,
     userposthelpue: String,
     comments: [String]
 
@@ -661,6 +712,7 @@ app.post("/post-ue", bodyParser.urlencoded({ extended: false }), [
         const postalert = posterrors.array()
         res.render('post-ue', { postalert })
     } else {
+        let newTime = new Date();
         const posthelpue = new PostHelpue({
             name: req.body.name,
             age: req.body.age,
@@ -672,7 +724,8 @@ app.post("/post-ue", bodyParser.urlencoded({ extended: false }), [
             contact: req.body.contact,
             sector: req.body.sector,
             email: req.body.email,
-            time: new Date(),
+            time: newTime,
+            epochtime: newTime.getTime(),
             userposthelpue: usernameafterlogin
         });
 
@@ -835,14 +888,33 @@ app.get("/filterposts", function(req, res) {
         res.redirect("/login");
     }
 });
+app.get("/filterposts-unemployment", function(req, res) {
+    if (req.isAuthenticated()) {
+        PostHelpue.find({ "name": { $ne: null } }, function(err, foundPosthelpue) {
+            comments.find({}, function(err, foundComment) {
+            if (err) {
+                console.log(err);
+            } else {
+                if (foundPosthelpue) {
+                    res.render("filterposts-unemployment", { posthelpues: foundPosthelpue, citysearch: cityname, statesearch: statename, requirementsearch: requirementname });
+
+                }
+            }
+        });
+        });
+    } else {
+        res.redirect("/login");
+    }
+});
 
 app.get("/filterpostslogout", function(req, res) {
     PostHelp.find({ "name": { $ne: null } }, function(err, foundPosthelp) {
+        
         if (err) {
             console.log(err);
         } else {
             if (foundPosthelp) {
-                res.render("filterpostslogout", { posthelps: foundPosthelp, citysearch: cityname, statesearch: statename, requirementsearch: requirementname });
+                res.render("filterpostslogout", { posthelps: foundPosthelp, citysearch: cityname, statesearch: statename, requirementsearch: requirementname, commentData: foundComment });
 
             }
         }
@@ -1119,6 +1191,7 @@ app.get('/profile', (req, res) => {
                         PostHelpue.find({}, function(err, foundPosthelpue) {
                             PostHelpndc.find({}, function(err, foundPosthelpndc) {
                                 PostSer.find({}, function(err, foundPostser) {
+                                    
                                     res.render("profilepage", {
                                         data: data,
                                         usernameafterlogin: usernameafterlogin,
@@ -1273,7 +1346,7 @@ app.post("/feed-ue", bodyParser.urlencoded({ extended: false }), function(req, r
         comments.updateOne({ "_id": ObjectID(reis[0]) }, {
                 $push: {
                     "replies": {
-                        "name": "Annonymous",
+                        "name": req.user.firstName + " " + req.user.lastName,
                         "content": req.body.content,
                         "date": new Date()
 
@@ -1292,7 +1365,7 @@ app.post("/feed-ue", bodyParser.urlencoded({ extended: false }), function(req, r
 
     } else {
         const comment = new comments({
-            name: req.body.name,
+            name: req.user.firstName + " " + req.user.lastName,
 
             content: req.body.content,
 
@@ -1321,6 +1394,63 @@ app.post("/feed-ue", bodyParser.urlencoded({ extended: false }), function(req, r
 
 });
 
+app.post("/filterposts-unemployment", bodyParser.urlencoded({ extended: false }), function(req, res) {
+
+
+    var reis = req.body.comment.split(",");
+    console.log(reis)
+    if (reis[1] == 0) {
+        comments.updateOne({ "_id": ObjectID(reis[0]) }, {
+                $push: {
+                    "replies": {
+                        "name": req.user.firstName + " " + req.user.lastName,
+                        "content": req.body.content,
+                        "date": new Date()
+
+                    }
+                }
+            }).then((obj) => {
+
+                console.log(obj);
+            })
+            .catch((err) => {
+                console.log(err)
+
+            })
+        console.log(reis[0])
+        res.redirect("/filterposts-unemployment");
+
+    } else {
+        const comment = new comments({
+            name: req.user.firstName + " " + req.user.lastName,
+
+            content: req.body.content,
+
+            time: new Date()
+        });
+
+
+        comment.save(function(err) {
+            if (!err) {
+
+
+
+                PostHelpue.updateOne({ "_id": ObjectID(reis[0]) }, { $push: { "comments": comment.id } }).then((obj) => {
+
+                        console.log(obj);
+                    })
+                    .catch((err) => {
+                        console.log(err)
+
+                    })
+
+                res.redirect("/filterposts-unemployment");
+            }
+        });
+    }
+
+});
+
 
 app.post("/feed-ndc", bodyParser.urlencoded({ extended: false }), function(req, res) {
 
@@ -1331,7 +1461,7 @@ app.post("/feed-ndc", bodyParser.urlencoded({ extended: false }), function(req, 
         comments.updateOne({ "_id": ObjectID(reis[0]) }, {
                 $push: {
                     "replies": {
-                        "name": "Annonymous",
+                        "name": req.user.firstName + " " + req.user.lastName,
                         "content": req.body.content,
                         "date": new Date()
 
@@ -1350,7 +1480,7 @@ app.post("/feed-ndc", bodyParser.urlencoded({ extended: false }), function(req, 
 
     } else {
         const comment = new comments({
-            name: req.body.name,
+            name: req.user.firstName + " " + req.user.lastName,
 
             content: req.body.content,
 
@@ -1386,7 +1516,7 @@ app.post("/feed", bodyParser.urlencoded({ extended: false }), function(req, res)
         comments.updateOne({ "_id": ObjectID(reis[0]) }, {
                 $push: {
                     "replies": {
-                        "name": "Annonymous",
+                        "name": req.user.firstName + " " + req.user.lastName,
                         "content": req.body.content,
                         "date": new Date()
 
@@ -1406,7 +1536,7 @@ app.post("/feed", bodyParser.urlencoded({ extended: false }), function(req, res)
     } else {
 
         const comment = new comments({
-            name: req.body.name,
+            name: req.user.firstName + " " + req.user.lastName,
 
             content: req.body.content,
 
@@ -1443,7 +1573,7 @@ app.post("/services", bodyParser.urlencoded({ extended: false }), function(req, 
         comments.updateOne({ "_id": ObjectID(reis[0]) }, {
                 $push: {
                     "replies": {
-                        "name": "Annonymous",
+                        "name": req.user.firstName + " " + req.user.lastName,
                         "content": req.body.content,
                         "date": new Date()
 
@@ -1462,7 +1592,7 @@ app.post("/services", bodyParser.urlencoded({ extended: false }), function(req, 
 
     } else {
         const comment = new comments({
-            name: req.body.name,
+            name: req.user.firstName + " " + req.user.lastName,
 
             content: req.body.content,
 
@@ -1491,6 +1621,202 @@ app.post("/services", bodyParser.urlencoded({ extended: false }), function(req, 
 
 
 
+});
+
+
+const notificationSchema = new mongoose.Schema({
+    user: String,
+    lastPostTime: Date,
+    preferredGroup: String,
+    preferredSubGroup: [String] 
+  });
+const Notif = mongoose.model('Notif',notificationSchema);
+app.post("/notifs", (req,res) => {
+    if (req.isAuthenticated()) {
+      let dateNow = new Date();
+      Notif.findOneAndUpdate({user: req.user.username}, {lastPostTime : dateNow, preferredGroup: req.body.preferredGroup, preferredSubGroup: req.body.preferredSubGroup},(err,dat) => {
+        //console.log(req.body);
+        if (err) {
+          console.log(err);
+          res.status(err.status||500);
+        }
+      });
+    }
+  });
+  
+  
+  
+app.get("/notifs", (req,res) => {
+if (req.isAuthenticated()) {
+    Notif.find({user: req.user.username}, (err,data) => {
+    let dateNow = new Date();
+    if(err) {
+        console.log(err);
+        res.status(500);
+    }
+    else {
+        if (data.length == 0) {
+        let newNot = new Notif({user: req.user.username, lastPostTime: dateNow, preferredGroup: "any", preferredSubGroup: []});
+        newNot.save((err) => {
+            if (err) {
+            console.log(err);
+            res.status(500);
+            }
+        });
+        res.json({
+            "any" : 1,
+            "covid19": 0,
+            "ndc": 0,
+            "unemployment": 0 
+        })
+        }
+        else {
+        dateNow = data[0].lastPostTime.getTime();
+        if (data[0].preferredGroup == "any") {
+            let ret = {
+            "any": 1,
+            "covid19": 0,
+            "ndc": 0,
+            "unemployment": 0 
+            }
+            PostHelp.find({epochtime: {$gt: dateNow}}, (err,dat) => {
+            if (err) {
+                console.log(err);
+                res.status(err.status||500);
+            }
+            else {
+                if(dat.length > 4) {
+                ret.covid19 = dat.length;
+                }
+            }
+            });
+            PostHelpndc.find({epochtime: {$gt: dateNow}}, (err,dat) => {
+            if (err) {
+                console.log(err);
+                res.status(err.status||500);
+            }
+            else {
+                if(dat.length > 4) {
+                ret.ndc = dat.length;
+                }
+            }
+            });
+            PostHelpue.find({epochtime: {$gt: dateNow}}, (err,dat) => {
+            if (err) {
+                console.log(err);
+                res.status(err.status||500);
+            }
+            else {
+                if(dat.length > 4) {
+                ret.unemployment = dat.length;
+                }
+            }
+            });
+            res.json(ret);
+        }
+        else {
+            if (data[0].preferredSubGroup == null || data[0].preferredSubGroup.length == 0) {
+            let ret = {
+                "any": 1,
+                "covid19": 0,
+                "ndc": 0,
+                "unemployment": 0 
+            }
+            if (data[0].preferredGroup == 'covid19' || data[0].preferredGroup == 'any' || data[0].preferredGroup == null) {
+                PostHelp.find({epochtime: {$lte: dateNow}}, (err,dat) => {
+                if (err) {
+                    console.log(err);
+                    res.status(err.status||500);
+                }
+                else {
+                    //console.log(dat.length);
+                    if(dat.length > 4) {
+                    ret.covid19 = dat.length;
+                    }
+                }
+                });
+            }
+            if (data[0].preferredGroup == 'employment'|| data[0].preferredGroup == 'any' || data[0].preferredGroup == null) {
+                PostHelpue.find({epochtime: {$gt: dateNow}}, (err,dat) => {
+                if (err) {
+                    console.log(err);
+                    res.status(err.status||500);
+                }
+                else {
+                    if(dat.length > 4) {
+                    ret.unemployment = dat.length;
+                    }
+                }
+                });
+            }
+            if (data[0].preferredGroup == 'ndc'|| data[0].preferredGroup == 'any' || data[0].preferredGroup == null) {
+                PostHelpndc.find({epochtime: {$gt: dateNow}}, (err,dat) => {
+                if (err) {
+                    console.log(err);
+                    res.status(err.status||500);
+                }
+                else {
+                    if(dat.length > 4) {
+                    ret.ndc = dat.length;
+                    }
+                }
+                });
+            }
+            res.json(ret);
+            }
+            else {
+            let ret = {
+                "any": 0,
+                "covid19": 0,
+                "ndc": 0,
+                "unemployment": 0 
+            }
+            PostHelp.find({epochtime : {$gt: dateNow}, requirement: {$in : data[0].preferredSubGroup}}, (err,dat) => {
+                if (err) {
+                console.log(err);
+                res.status(err.status||500);
+                }
+                else {
+                if (dat.length > 4) {
+                    ret.covid19 = dat.length;
+                }
+                }
+            });
+            PostHelpndc.find({epochtime : {$gt: dateNow}, requirement: {$in : data[0].preferredSubGroup}}, (err,dat) => {
+                if (err) {
+                console.log(err);
+                res.status(err.status||500);
+                }
+                else {
+                if (dat.length > 4) {
+                    ret.ndc = dat.length;
+                }
+                }
+            });
+            PostHelpue.find({epochtime : {$gt: dateNow}, requirement: {$in : data[0].preferredSubGroup}}, (err,dat) => {
+                if (err) {
+                console.log(err);
+                res.status(err.status||500);
+                }
+                else {
+                if (dat.length > 4) {
+                    ret.unemployment = dat.length;
+                }
+                }
+            });
+            res.json(ret);
+            }
+        }
+        Notif.findOneAndUpdate({user: req.user.username}, {lastPostTime: new Date()}, (err,data) => {
+            if(err) {
+            res.status(err.status||500);
+            console.log(err);
+            }
+        });
+        }
+    }
+    });
+}
 });
 
 app.listen(3000);
