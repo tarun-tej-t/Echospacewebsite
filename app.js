@@ -97,7 +97,8 @@ const clickData = new mongoose.Schema({
     "Financial Help Contact": Number,
     "Other Contact": Number,
     "ndcContact": Number,
-    "employmentContact": Number
+    "employmentContact": Number,
+    "serviceContact": Number
 });
 const ClickData = mongoose.model("ClickData", clickData);
 
@@ -418,7 +419,7 @@ app.post("/login", function(req, res) {
 
                 ClickData.find({ user: req.user.username }, (err, data) => {
                     if (data.length === 0) {
-                        let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0 });
+                        let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0, "serviceContact": 0  });
                         newClickData.save((err) => {
                             if (err) console.log(err);
                         });
@@ -484,7 +485,7 @@ app.post("/filterposts", function(req, res) {
     if (req.isAuthenticated()) {
         ClickData.find({ user: req.user.username }, (err, data) => {
             if (data.length === 0) {
-                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0 });
+                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0,"serviceContact": 0 });
                 newClickData.save((err) => {
                     if (err) console.log(err);
                 });
@@ -511,7 +512,7 @@ app.post("/filterposts-unemployment", function(req, res) {
     if (req.isAuthenticated()) {
         ClickData.find({ user: req.user.username }, (err, data) => {
             if (data.length === 0) {
-                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0 });
+                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0,"serviceContact": 0 });
                 newClickData.save((err) => {
                     if (err) console.log(err);
                 });
@@ -926,7 +927,7 @@ app.get("/feed", function(req, res) {
     if (req.isAuthenticated()) {
         ClickData.find({ user: req.user.username }, (err, data) => {
             if (data.length === 0) {
-                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0 });
+                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0,"serviceContact": 0 });
                 newClickData.save((err) => {
                     if (err) console.log(err);
                 });
@@ -954,7 +955,7 @@ app.get("/feed-ue", function(req, res) {
     if (req.isAuthenticated()) {
         ClickData.find({ user: req.user.username }, (err, data) => {
             if (data.length === 0) {
-                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0 });
+                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0,"serviceContact": 0 });
                 newClickData.save((err) => {
                     if (err) console.log(err);
                 });
@@ -982,7 +983,7 @@ app.get("/feed-ndc", function(req, res) {
     if (req.isAuthenticated()) {
         ClickData.find({ user: req.user.username }, (err, data) => {
             if (data.length === 0) {
-                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0 });
+                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0,"serviceContact": 0 });
                 newClickData.save((err) => {
                     if (err) console.log(err);
                 });
@@ -1014,7 +1015,7 @@ app.get("/feedlogout", function(req, res) {
     if (req.isAuthenticated()) {
         ClickData.find({ user: req.user.username }, (err, data) => {
             if (data.length === 0) {
-                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0 });
+                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0,"serviceContact": 0 });
                 newClickData.save((err) => {
                     if (err) console.log(err);
                 });
@@ -1041,7 +1042,7 @@ app.get("/feedlogout-ue", function(req, res) {
 
         ClickData.find({ user: req.user.username }, (err, data) => {
             if (data.length === 0) {
-                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0 });
+                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0,"serviceContact": 0 });
                 newClickData.save((err) => {
                     if (err) console.log(err);
                 });
@@ -1068,7 +1069,7 @@ app.get("/feedlogout-ndc", function(req, res) {
     if (req.isAuthenticated()) {
         ClickData.find({ user: req.user.username }, (err, data) => {
             if (data.length === 0) {
-                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0 });
+                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0,"serviceContact": 0 });
                 newClickData.save((err) => {
                     if (err) console.log(err);
                 });
@@ -1565,7 +1566,23 @@ app.post("/feed", bodyParser.urlencoded({ extended: false }), function(req, res)
 });
 
 app.post("/services", bodyParser.urlencoded({ extended: false }), function(req, res) {
-
+    if (req.isAuthenticated()) {
+        ClickData.find({ user: req.user.username }, (err, data) => {
+            if (data.length === 0) {
+                let newClickData = new ClickData({ user: req.user.username, "Beds without oxygen": 0, "Beds with oxygen": 0, "Medicine Type": 0, "Oxygen Concentrator": 0, "Plasma": 0, "Financial Help": 0, "Other": 0, "naturalDisaster": 0, "covid19": 0, "unemployment": 0, "covidContact": 0, "Beds without oxygen Contact": 0, "Beds with oxygen Contact": 0, "Medicine Type Contact": 0, "Oxygen Concentrator Contact": 0, "Plasma Contact": 0, "Financial Help Contact": 0, "Other Contact": 0, "ndcContact": 0, "employmentContact": 0,"serviceContact": 0 });
+                newClickData.save((err) => {
+                    if (err) console.log(err);
+                });
+            }
+        });
+        ClickData.findOneAndUpdate({ user: req.user.username }, {
+            $inc: {
+                "services": 1 
+            }
+        }, (err) => {
+            if (err) console.log(err);
+        });
+    }
 
     var reis = req.body.comment.split(",");
     console.log(reis)
